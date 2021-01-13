@@ -1,4 +1,4 @@
-package com.tank.algorithm.sorting;
+package com.tank.sorting;
 
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
