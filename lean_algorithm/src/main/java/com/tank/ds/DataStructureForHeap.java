@@ -37,13 +37,13 @@ public class DataStructureForHeap<T extends Comparable<T>> {
     return this.array;
   }
 
+
   public void up(@NonNull Integer index) {
     while (index > 0 && this.array[index].compareTo(this.array[parent(index)]) > 0) {
       this.swap(index, parent(index));
       index = parent(index);
     }
   }
-
 
 
   public void swap(@NonNull Integer i, @NonNull Integer j) {
@@ -54,15 +54,18 @@ public class DataStructureForHeap<T extends Comparable<T>> {
 
 
   public int parent(@NonNull Integer index) {
-    return (index - 1) / 2;
+    //return (index - 1) / 2;
+    return index / 2;
   }
 
   private int left(@NonNull Integer index) {
-    return 2 * index + 1;
+    //return 2 * index + 1;
+    return 2 * index;
   }
 
   private int right(@NonNull final Integer index) {
-    return 2 * index + 2;
+    //return 2 * index + 2;
+    return 2 * index + 1;
   }
 
 
