@@ -63,10 +63,10 @@ public class DataStructureForHeap<T extends Comparable<T>> {
 
   private int size = 0;
 
-  private int capacity = 0;
+  private int capacity;
 
   private T[] array;
 
-  private Class<T> clazz;
+  private final Class<T> clazz;
 
 }
