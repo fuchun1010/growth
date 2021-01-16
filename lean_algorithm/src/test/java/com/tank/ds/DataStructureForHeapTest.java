@@ -2,38 +2,30 @@ package com.tank.ds;
 
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+/**
+ * @author tank198435163.com
+ */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataStructureForHeapTest {
 
   @Test
-  void add() throws IllegalAccessException {
-    Assertions.assertNotNull(this.dataStructureForHeap);
-    for (Integer data : values) {
-      this.dataStructureForHeap.add(data);
+  void testMaxHeap1() {
+    Integer[] array = {5, 9, 19, 7, 8};
+    for (val data : array) {
+      this.heap.add(data);
     }
-    val result = this.dataStructureForHeap.obtainArray();
-    Assertions.assertNotNull(result);
-  }
-
-  @Test
-  void add2() throws IllegalAccessException {
-    this.values = new Integer[]{6, 5, 7, 9, 8, 10, 11, 12};
-    for (Integer data : values) {
-      this.dataStructureForHeap.add(data);
-    }
-    val result = this.dataStructureForHeap.obtainArray();
-    Assertions.assertNotNull(result);
+    Assertions.assertEquals(19, (int) this.heap.obtain());
   }
 
 
-  @BeforeEach
-  void initializer() {
-    this.dataStructureForHeap = new DataStructureForHeap<>(Integer.class);
+  @BeforeAll
+  void initialize() {
+    this.heap = new DataStructureForHeap<>(Integer.class);
   }
 
-  private DataStructureForHeap<Integer> dataStructureForHeap;
-
-  private Integer[] values = {1, 3, 2, 7, 8, 9, 10, 0};
+  private DataStructureForHeap<Integer> heap;
 }

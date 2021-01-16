@@ -1,10 +1,8 @@
 package com.tank.ds;
 
 import lombok.NonNull;
-import lombok.val;
 
 import java.lang.reflect.Array;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @param <T>
@@ -13,66 +11,62 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DataStructureForHeap<T extends Comparable<T>> {
 
   public DataStructureForHeap(@NonNull final Class<T> clazz) {
-    this(1 << 3, clazz);
+    this(1 << 4, clazz);
   }
 
   @SuppressWarnings("unchecked")
-  public DataStructureForHeap(@NonNull final Integer capacity, @NonNull final Class<T> clazz) {
+  public DataStructureForHeap(int capacity, Class<T> clazz) {
+    this.clazz = clazz;
     this.capacity = capacity;
-    this.array = ((T[]) Array.newInstance(clazz, capacity));
+    this.array = ((T[]) Array.newInstance(clazz, this.capacity));
   }
 
-
-  public void add(@NonNull T data) throws IllegalAccessException {
-    val index = this.counter.get();
-    if (index > this.array.length) {
-      throw new IllegalAccessException("over array index");
+  public void add(@NonNull final T data) {
+    if (this.size >= capacity) {
+      this.resize();
     }
-    this.array[index] = data;
-    this.up(index);
-    this.counter.incrementAndGet();
+    this.array[size++] = data;
+    this.siftUp(size - 1);
   }
 
-  public T[] obtainArray() {
-    return this.array;
+  public T obtain() {
+    return this.array[0];
   }
 
-
-  public void up(@NonNull Integer index) {
-    while (index > 0 && this.array[index].compareTo(this.array[parent(index)]) > 0) {
-      this.swap(index, parent(index));
-      index = parent(index);
+  private void siftUp(int index) {
+    T childValue = this.array[index];
+    while (index > 0) {
+      int parentIndex = this.parentIndex(index);
+      T parentValue = this.array[parentIndex];
+      if (childValue.compareTo(parentValue) < 0) {
+        return;
+      }
+      T tmp = this.array[index];
+      this.array[index] = this.array[parentIndex];
+      this.array[parentIndex] = tmp;
+      index = parentIndex;
     }
   }
 
+  private int parentIndex(int index) {
+    return (index - 1) >>> 1;
+  }
 
-  public void swap(@NonNull Integer i, @NonNull Integer j) {
-    T tmp = this.array[i];
-    this.array[i] = this.array[j];
-    this.array[j] = tmp;
+  @SuppressWarnings("unchecked")
+  private void resize() {
+    this.capacity = this.capacity << 1;
+    T[] tmp = ((T[]) Array.newInstance(this.clazz, this.capacity));
+    System.arraycopy(this.array, 0, tmp, 0, this.array.length);
+    this.array = tmp;
   }
 
 
-  public int parent(@NonNull Integer index) {
-    //return (index - 1) / 2;
-    return index / 2;
-  }
+  private int size = 0;
 
-  private int left(@NonNull Integer index) {
-    //return 2 * index + 1;
-    return 2 * index;
-  }
-
-  private int right(@NonNull final Integer index) {
-    //return 2 * index + 2;
-    return 2 * index + 1;
-  }
-
+  private int capacity = 0;
 
   private T[] array;
 
-  private final int capacity;
-
-  private final AtomicInteger counter = new AtomicInteger(0);
+  private Class<T> clazz;
 
 }
