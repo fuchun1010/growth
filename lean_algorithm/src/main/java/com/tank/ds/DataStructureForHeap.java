@@ -1,6 +1,7 @@
 package com.tank.ds;
 
 import lombok.NonNull;
+import lombok.val;
 
 import java.lang.reflect.Array;
 
@@ -29,6 +30,32 @@ public class DataStructureForHeap<T extends Comparable<T>> {
     this.siftUp(size - 1);
   }
 
+  public void remove() {
+    this.array[0] = this.array[size - 1];
+    this.array[size - 1] = null;
+    this.size--;
+    this.siftDown(0);
+  }
+
+  private void siftDown(int index) {
+    val half = this.size >> 1;
+    T element = this.array[index];
+    while (index < half) {
+      int leftIndex = this.leftIndex(index);
+      T leftValue = this.array[leftIndex];
+      int rightIndex = this.rightIndex(index);
+      if (rightIndex < size && this.array[rightIndex].compareTo(leftValue) > 0) {
+        leftValue = this.array[leftIndex = rightIndex];
+      }
+      if (element.compareTo(leftValue) >= 0) {
+        break;
+      }
+      this.array[index] = this.array[leftIndex];
+      index = leftIndex;
+    }
+    this.array[index] = element;
+  }
+
   public T obtain() {
     return this.array[0];
   }
@@ -50,6 +77,14 @@ public class DataStructureForHeap<T extends Comparable<T>> {
 
   private int parentIndex(int index) {
     return (index - 1) >>> 1;
+  }
+
+  private int leftIndex(int index) {
+    return (index << 1) + 1;
+  }
+
+  private int rightIndex(int index) {
+    return (index << 1) + 2;
   }
 
   @SuppressWarnings("unchecked")
