@@ -60,7 +60,7 @@ public class DataStructureForHeap<T extends Comparable<T>> {
     return this.array[0];
   }
 
-  private void siftUp(int index) {
+  public void siftUp(int index) {
     T childValue = this.array[index];
     while (index > 0) {
       int parentIndex = this.parentIndex(index);
@@ -102,6 +102,6 @@ public class DataStructureForHeap<T extends Comparable<T>> {
 
   private T[] array;
 
-  private final Class<T> clazz;
+  private Class<T> clazz;
 
 }

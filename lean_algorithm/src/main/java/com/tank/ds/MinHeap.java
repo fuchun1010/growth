@@ -10,28 +10,42 @@ import java.lang.reflect.Array;
  */
 class MinHeap<T extends Comparable<T>> {
 
-  MinHeap(@NonNull final Class<T> clazz) {
+  public MinHeap(@NonNull final Class<T> clazz) {
     this(1 << 4, clazz);
   }
 
+  public MinHeap(@NonNull final T[] array) {
+    this.array = array;
+  }
+
   @SuppressWarnings("unchecked")
-  MinHeap(int capacity, @NonNull final Class<T> clazz) {
+  public MinHeap(int capacity, @NonNull final Class<T> clazz) {
     this.capacity = capacity;
     this.clazz = clazz;
     this.array = ((T[]) Array.newInstance(clazz, capacity));
   }
 
-  T min() {
+  public T min() {
     return this.array[0];
   }
 
-  void add(@NonNull T data) {
-    //TODO process resize
+  public void add(@NonNull T data) {
+    if (this.size >= capacity) {
+      this.resize();
+    }
     this.array[this.size++] = data;
     this.siftUp(this.size - 1);
   }
 
-  private void siftUp(int index) {
+  public T[] obtain() {
+    return this.array;
+  }
+
+  public int size() {
+    return this.size;
+  }
+
+  public void siftUp(int index) {
     T childValue = this.array[index];
     while (index > 0) {
       int parentIndex = this.parentIndex(index);
@@ -39,15 +53,24 @@ class MinHeap<T extends Comparable<T>> {
       if (childValue.compareTo(parentNode) > 0) {
         return;
       }
-      T tmp = this.array[parentIndex];
-      this.array[parentIndex] = this.array[index];
-      this.array[index] = tmp;
+      T tmp = this.array[index];
+      this.array[index] = this.array[parentIndex];
+      this.array[parentIndex] = tmp;
       index = parentIndex;
     }
+    this.array[index] = childValue;
   }
 
   private int parentIndex(int index) {
     return (index - 1) >>> 1;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void resize() {
+    T[] tmpArray = ((T[]) Array.newInstance(this.clazz, this.capacity << 1));
+    System.arraycopy(this.array, 0, tmpArray, 0, this.array.length - 1);
+    this.array = tmpArray;
+    this.capacity = this.capacity << 1;
   }
 
   private int size;
