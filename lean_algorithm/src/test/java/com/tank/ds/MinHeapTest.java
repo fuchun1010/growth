@@ -61,6 +61,18 @@ class MinHeapTest {
     Assertions.assertNull(newArray[array.length]);
   }
 
+  @Test
+  void remove() {
+    final Integer[] array = {13, 11, 12, 26, 9, 24, 30, 28, 3, 7, 6, 29, 17, 18, 16, 10};
+    Arrays.stream(array).forEach(this.minHeap::add);
+    this.minHeap.remove();
+    Assertions.assertNotNull(this.minHeap);
+    val fullArray = this.minHeap.obtain();
+    Assertions.assertEquals(6, (int) fullArray[0]);
+    Assertions.assertEquals(7, (int) fullArray[1]);
+    Assertions.assertEquals(12, (int) fullArray[2]);
+  }
+
 
   @BeforeEach
   void initialize() {

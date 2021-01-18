@@ -37,6 +37,43 @@ class MinHeap<T extends Comparable<T>> {
     this.siftUp(this.size - 1);
   }
 
+  public void remove() {
+    int lastIndex = this.size() - 1;
+    this.array[0] = this.array[lastIndex];
+    this.array[lastIndex] = null;
+    this.size--;
+    this.siftDown(0);
+  }
+
+  private void siftDown(int index) {
+    T elementNode = this.array[index];
+    int half = this.size >> 1;
+    while (index < half) {
+      int leftIndex = this.leftIndex(index);
+      T leftNode = this.array[leftIndex];
+      int rightIndex = this.rightIndex(index);
+      if (rightIndex < size && this.array[rightIndex].compareTo(leftNode) <= 0) {
+        leftNode = this.array[rightIndex];
+        leftIndex = rightIndex;
+      }
+      if (leftNode.compareTo(elementNode) > 0) {
+        return;
+      }
+
+      T tmp = this.array[index];
+      this.array[index] = this.array[leftIndex];
+      this.array[leftIndex] = tmp;
+      index = leftIndex;
+    }
+
+  }
+
+  private void swap(T t, T t1) {
+    T tmp = t;
+    t = t1;
+    t1 = tmp;
+  }
+
   public T[] obtain() {
     return this.array;
   }
@@ -62,6 +99,14 @@ class MinHeap<T extends Comparable<T>> {
 
   private int parentIndex(int index) {
     return (index - 1) >> 1;
+  }
+
+  private int leftIndex(int index) {
+    return (index << 1) + 1;
+  }
+
+  private int rightIndex(int index) {
+    return (index << 1) + 2;
   }
 
   @SuppressWarnings("unchecked")
