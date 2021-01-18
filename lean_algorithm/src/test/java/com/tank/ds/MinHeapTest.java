@@ -2,7 +2,7 @@ package com.tank.ds;
 
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -36,7 +36,7 @@ class MinHeapTest {
     val result = this.minHeap.min();
     final Integer[] fullArray = this.minHeap.obtain();
     Assertions.assertEquals(3, (int) result);
-    Assertions.assertEquals(6, (int) fullArray[0]);
+    Assertions.assertEquals(6, (int) fullArray[1]);
     //Assertions.assertEquals();
   }
 
@@ -58,11 +58,11 @@ class MinHeapTest {
     System.arraycopy(array, 0, newArray, 0, array.length);
     Assertions.assertNotNull(array);
     Assertions.assertNotNull(newArray);
-    Assertions.assertEquals(array.length, newArray.length);
+    Assertions.assertNull(newArray[array.length]);
   }
 
 
-  @BeforeAll
+  @BeforeEach
   void initialize() {
     this.minHeap = new MinHeap<>(Integer.class);
   }

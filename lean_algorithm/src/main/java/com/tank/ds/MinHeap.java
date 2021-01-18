@@ -50,11 +50,11 @@ class MinHeap<T extends Comparable<T>> {
     while (index > 0) {
       int parentIndex = this.parentIndex(index);
       T parentNode = this.array[parentIndex];
-      if (childValue.compareTo(parentNode) > 0) {
+      if (parentNode.compareTo(childValue) <= 0) {
         return;
       }
       T tmp = this.array[index];
-      this.array[index] = this.array[parentIndex];
+      this.array[index] = parentNode;
       this.array[parentIndex] = tmp;
       index = parentIndex;
     }
@@ -62,7 +62,7 @@ class MinHeap<T extends Comparable<T>> {
   }
 
   private int parentIndex(int index) {
-    return (index - 1) >>> 1;
+    return (index - 1) >> 1;
   }
 
   @SuppressWarnings("unchecked")
