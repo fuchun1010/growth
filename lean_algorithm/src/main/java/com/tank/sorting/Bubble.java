@@ -12,7 +12,7 @@ import java.util.Collection;
  * @param <T>
  * @author tank198435163.com
  */
-public class Bubble<T extends Comparable<T>> {
+public class Bubble<T extends Comparable<T>> implements Sorting<T> {
 
   @SuppressWarnings("unchecked")
   public Bubble(@NonNull final Collection<T> collection,
@@ -22,7 +22,12 @@ public class Bubble<T extends Comparable<T>> {
     new ArrayList<>(collection).toArray(this.array);
   }
 
-  public T[] sortAsc() {
+  @Override
+  public T[] sort() {
+    return this.sortAsc();
+  }
+
+  private T[] sortAsc() {
     final T[] targets = Arrays.copyOfRange(this.array, 0, this.array.length - 1);
     val len = targets.length;
     for (int i = 0; i < len; i++) {
@@ -37,10 +42,11 @@ public class Bubble<T extends Comparable<T>> {
 
       }
     }
-
     return targets;
   }
 
 
-  private T[] array;
+  private final T[] array;
+
+
 }

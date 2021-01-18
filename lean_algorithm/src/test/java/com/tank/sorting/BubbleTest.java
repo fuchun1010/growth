@@ -12,7 +12,7 @@ class BubbleTest {
 
   @Test
   void sortAsc() {
-    val result = this.bubble.sortAsc();
+    val result = this.bubble.sort();
     Assertions.assertNotNull(result);
     Assertions.assertTrue(result[0] < result[1]);
   }
