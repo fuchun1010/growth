@@ -58,7 +58,6 @@ class MinHeap<T extends Comparable<T>> {
       this.array[parentIndex] = tmp;
       index = parentIndex;
     }
-    this.array[index] = childValue;
   }
 
   private int parentIndex(int index) {
