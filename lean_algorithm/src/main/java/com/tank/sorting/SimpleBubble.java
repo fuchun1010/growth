@@ -47,5 +47,5 @@ public class SimpleBubble<T> {
 
   private Class<T> clazz;
 
-  private T[] array;
+  private final T[] array;
 }
