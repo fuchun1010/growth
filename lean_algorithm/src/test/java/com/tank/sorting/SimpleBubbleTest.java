@@ -48,6 +48,23 @@ class SimpleBubbleTest {
     Assertions.assertEquals(6, (int) result[0]);
   }
 
+  @Test
+  void highPerformanceSort1() {
+    this.simpleBubble = new SimpleBubble<>(Lists.newArrayList(13, 11, 12, 26, 9, 24, 30, 28, 7, 6, 29, 17, 18, 16, 10), Integer.class);
+    Assertions.assertNotNull(this.simpleBubble);
+    val result = this.simpleBubble.highPerformanceSort(Integer::compareTo);
+    val times = this.simpleBubble.compareTimes();
+    Assertions.assertTrue(times > 0);
+    Assertions.assertEquals(1, (int) result[0]);
+    Assertions.assertEquals(2, (int) result[1]);
+    Assertions.assertEquals(3, (int) result[2]);
+    Assertions.assertEquals(4, (int) result[3]);
+    Assertions.assertEquals(5, (int) result[4]);
+    Assertions.assertEquals(6, (int) result[5]);
+    Assertions.assertEquals(7, (int) result[6]);
+    Assertions.assertEquals(8, (int) result[7]);
+  }
+
   @BeforeEach
   void initialize() {
     this.simpleBubble = new SimpleBubble<>(Lists.newArrayList(5, 1, 6, 4), Integer.class);

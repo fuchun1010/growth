@@ -5,9 +5,11 @@ import lombok.val;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * @author tank198435163.com
@@ -22,6 +24,43 @@ public class SimpleBubble<T> {
     val size = collection.size();
     this.array = ((T[]) Array.newInstance(clazz, size));
     new ArrayList<>(collection).toArray(this.array);
+  }
+
+
+  public T[] highPerformanceSort(@NonNull final Comparator<T> comparator) {
+    final T[] targetArray = this.initializeArray();
+    val length = targetArray.length;
+
+    for (int i = 0; i < length - 1; i++) {
+      boolean isSorted = true;
+      int sortBorder = length - 1;
+      for (int j = 0; j < sortBorder; j++) {
+        T first = targetArray[j];
+        T second = targetArray[j + 1];
+        boolean isGreater = comparator.compare(first, second) > 0;
+        if (isGreater) {
+          T tmp = targetArray[j];
+          targetArray[j] = targetArray[j + 1];
+          targetArray[j + 1] = tmp;
+          isSorted = false;
+          sortBorder = j;
+        }
+        this.counter.incrementAndGet();
+      }
+
+      if (isSorted) {
+        break;
+      }
+    }
+
+    return targetArray;
+  }
+
+  @SuppressWarnings("unchecked")
+  private T[] initializeArray() {
+    final T[] targetArray = ((T[]) Array.newInstance(this.clazz, this.array.length));
+    Arrays.stream(this.array).collect(Collectors.toList()).toArray(targetArray);
+    return targetArray;
   }
 
   public T[] sort(@NonNull final Comparator<T> comparator) {
@@ -53,7 +92,6 @@ public class SimpleBubble<T> {
   public int compareTimes() {
     return this.counter.get();
   }
-
 
   private Comparator<T> comparator;
 
