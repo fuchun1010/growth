@@ -44,6 +44,7 @@ public class SimpleBubble<T> {
           targetArray[j + 1] = tmp;
           isSorted = false;
           sortBorder = j;
+          i--;
         }
         this.counter.incrementAndGet();
       }
