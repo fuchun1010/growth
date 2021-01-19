@@ -1,10 +1,8 @@
 package com.tank.sorting;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
+@DisplayName("快排")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QuickSortingTest {
 
