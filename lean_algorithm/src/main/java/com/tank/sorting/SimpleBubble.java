@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author tank198435163.com
@@ -28,18 +29,29 @@ public class SimpleBubble<T> {
     int length = this.array.length;
 
     for (int i = 0; i < length - 1; i++) {
+      boolean isSorted = false;
       for (int j = 0; j < length - i - 1; j++) {
         T f = this.array[j];
         T s = this.array[j + 1];
+        counter.incrementAndGet();
         if (comparator.compare(f, s) > 0) {
           T tmp = this.array[j];
           this.array[j] = this.array[j + 1];
           this.array[j + 1] = tmp;
+          isSorted = true;
         }
+      }
+
+      if (!isSorted) {
+        break;
       }
     }
 
     return this.array;
+  }
+
+  public int compareTimes() {
+    return this.counter.get();
   }
 
 
@@ -48,4 +60,6 @@ public class SimpleBubble<T> {
   private Class<T> clazz;
 
   private final T[] array;
+
+  private final AtomicInteger counter = new AtomicInteger(0);
 }
