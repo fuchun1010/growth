@@ -1,5 +1,6 @@
 package com.tank.algorithm;
 
+import cn.hutool.cache.impl.LFUCache;
 import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
