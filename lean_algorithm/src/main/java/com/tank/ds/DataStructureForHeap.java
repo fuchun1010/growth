@@ -23,7 +23,8 @@ public class DataStructureForHeap<T extends Comparable<T>> {
   }
 
   public void add(@NonNull final T data) {
-    if (this.size >= capacity) {
+    val isOverCapacity = this.size >= capacity;
+    if (isOverCapacity) {
       this.resize();
     }
     this.array[size++] = data;

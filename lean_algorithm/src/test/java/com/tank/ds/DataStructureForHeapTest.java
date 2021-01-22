@@ -1,5 +1,6 @@
 package com.tank.ds;
 
+import io.vavr.collection.Stream;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +20,13 @@ class DataStructureForHeapTest {
       this.heap.add(data);
     }
     Assertions.assertEquals(19, (int) this.heap.obtain());
+  }
+
+  @Test
+  void testMaxHeap2() {
+    final Integer[] array = {5, 7, 8, 4, 3, 9};
+    Stream.of(array).forEach(this.heap::add);
+    Assertions.assertEquals(9, (int) this.heap.obtain());
   }
 
   @Test
