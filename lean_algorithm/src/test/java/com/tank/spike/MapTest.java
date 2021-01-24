@@ -101,6 +101,14 @@ class MapTest {
   }
 
 
+  @Test
+  @DisplayName("比较大小")
+  void compareMax() {
+    val r1 = 1 << 30;
+    val rs = Integer.MAX_VALUE;
+    Assertions.assertNotEquals(r1, rs);
+  }
+
   @Getter
   @Setter
   private static class Driver implements Cloneable {
