@@ -2,6 +2,9 @@ package com.tank.sorting;
 
 import lombok.NonNull;
 
+/**
+ * @author tank198435163.com
+ */
 public class SimpleQuickSort {
 
   public void sort(@NonNull final Integer[] source, int startIndex, int endIndex) {
