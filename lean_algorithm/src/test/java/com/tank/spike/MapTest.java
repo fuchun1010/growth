@@ -1,5 +1,6 @@
 package com.tank.spike;
 
+import io.vavr.Tuple2;
 import io.vavr.collection.List;
 import io.vavr.collection.Stream;
 import io.vavr.control.Try;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.TestInstance;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -53,6 +56,48 @@ class MapTest {
     final int[] data = {3, 19, 35};
     val result = Stream.ofAll(data).map(d -> d & 15).reduce(Integer::sum);
     Assertions.assertEquals(9, (int) result);
+  }
+
+  @Test
+  @DisplayName("hash扰动函数测试")
+  void hashIndexTest() {
+    val driver = new Driver();
+    driver.setName("jack");
+    int cap = 4;
+    int h;
+    val hashCode = (h = driver.hashCode()) < 0 ? 0 : h ^ (h >>> 16);
+    Assertions.assertTrue(hashCode > 0);
+    val index = hashCode & (cap - 1);
+    Assertions.assertEquals(2, index);
+  }
+
+  @Test
+  @DisplayName("hash index分布")
+  void hashDistributionTest() {
+    int end = 500;
+    int star = 1;
+    val groups = IntStream.rangeClosed(star, end)
+            .boxed()
+            .map(index -> index ^ (index >>> 16))
+            .map(result -> {
+              val index = result & 15;
+              final Tuple2<Integer, Integer> tuple = new Tuple2<>(index, result);
+              return tuple;
+            })
+            .collect(Collectors.groupingBy(Tuple2::_1));
+
+    val groupsV2 = IntStream
+            .rangeClosed(star, end)
+            .boxed()
+            .map(index -> {
+              val result = index & 15;
+              final Tuple2<Integer, Integer> tuple = new Tuple2<>(index, result);
+              return tuple;
+            }).collect(Collectors.groupingBy(Tuple2::_1));
+
+    Assertions.assertFalse(groups.isEmpty());
+    Assertions.assertFalse(groupsV2.isEmpty());
+
   }
 
 
