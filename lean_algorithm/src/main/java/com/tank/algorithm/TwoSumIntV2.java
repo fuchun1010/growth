@@ -58,7 +58,7 @@ public class TwoSumIntV2 {
     this.quickSort(array, startIndex, pivotIndex - 1);
     this.quickSort(array, pivotIndex + 1, endIndex);
   }
-  
+
   public int pivotIndex(@NonNull final int[] array, int startIndex, int endIndex) {
     int pivot = array[startIndex];
     int markIndex = startIndex;

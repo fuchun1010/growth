@@ -48,6 +48,15 @@ class TwoSumIntV2Test {
   }
 
   @Test
+  @DisplayName("2数之和测试用例6")
+  void accumulateIndex6() {
+    final int[] array = {8, 1, 50, 2, 10, 13};
+    this.twoSumIntV2.quickSort(array);
+    val resultOpt = this.twoSumIntV2.accumulateIndex(array, 51);
+    Assertions.assertTrue(resultOpt.isDefined());
+  }
+
+  @Test
   @DisplayName("测试基准值index")
   void pivotIndex() {
     final int[] array = {4, 1, 2, 3, 7, 9};
