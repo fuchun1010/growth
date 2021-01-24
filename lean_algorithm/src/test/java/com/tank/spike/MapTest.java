@@ -47,6 +47,14 @@ class MapTest {
     Assertions.assertTrue("john".equalsIgnoreCase(drivers.get(1).getName()));
   }
 
+  @Test
+  @DisplayName("计算索引值")
+  void indexTest() {
+    final int[] data = {3, 19, 35};
+    val result = Stream.ofAll(data).map(d -> d & 15).reduce(Integer::sum);
+    Assertions.assertEquals(9, (int) result);
+  }
+
 
   @Getter
   @Setter
