@@ -30,11 +30,14 @@ public class WordCounter {
 
     environment.fromElements(this.words)
             .map((MapFunction<String, Tuple2<String, Integer>>) value -> new Tuple2<>(value, 1))
-            .returns(TypeInformation.of(new TypeHint<Tuple2<String, Integer>>() {
-            }))
+            .returns(TypeInformation.of(new Tuple2TypeHint()))
             .groupBy(0)
             .sum(1)
             .print();
+
+  }
+
+  private static class Tuple2TypeHint extends TypeHint<Tuple2<String, Integer>> {
 
   }
 
