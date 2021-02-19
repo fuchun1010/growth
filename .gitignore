@@ -4,3 +4,6 @@ growth.iml
 
 lean_algorithm/target
 lean_algorithm/lean_algorithm.iml
+
+stream-service/target
+stream-service/stream-service.iml
