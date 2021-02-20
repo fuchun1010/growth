@@ -30,8 +30,10 @@ public class WordCounterV2 {
             .map((MapFunction<String, Tuple2<String, Integer>>) value -> new Tuple2<>(value, 1))
             .name("transform")
             .returns(Types.TUPLE(Types.STRING, Types.INT))
+            .name("generic")
             .keyBy((KeySelector<Tuple2<String, Integer>, String>) value -> value.f0)
             .sum(1)
+            .name("aggregate")
             .print();
 
     env.execute("wordCounter v2");
