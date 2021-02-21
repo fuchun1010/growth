@@ -7,7 +7,7 @@ import lombok.val;
  */
 public class App {
   public static void main(final String[] args) {
-    val counter = new WordCounterV2("hello", "hello", "jack");
+    val counter = new WordCounter("hello", "hello", "jack");
     counter.count();
   }
 }
