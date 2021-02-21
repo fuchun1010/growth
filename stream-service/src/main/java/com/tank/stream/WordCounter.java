@@ -16,8 +16,6 @@ import java.util.Objects;
  */
 public class WordCounter {
 
-  private final String[] words;
-
   public WordCounter(@NonNull final String... words) {
     this.words = words;
   }
@@ -25,10 +23,12 @@ public class WordCounter {
   @SneakyThrows({Exception.class})
   public void count() {
     Objects.requireNonNull(this.words, "words not allowed empty");
-    val environment = ExecutionEnvironment.getExecutionEnvironment();
-    environment.setParallelism(1);
+    val env = ExecutionEnvironment.getExecutionEnvironment();
+    env.setParallelism(1);
 
-    environment.fromElements(this.words)
+    env.fromElements(this.words)
+            .name("bach-word-counter")
+            .filter(Objects::nonNull)
             .map((MapFunction<String, Tuple2<String, Integer>>) value -> new Tuple2<>(value, 1))
             .returns(TypeInformation.of(new Tuple2TypeHint()))
             .groupBy(0)
@@ -40,5 +40,7 @@ public class WordCounter {
   private static class Tuple2TypeHint extends TypeHint<Tuple2<String, Integer>> {
 
   }
+
+  private final String[] words;
 
 }
