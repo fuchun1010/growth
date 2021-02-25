@@ -8,19 +8,26 @@ import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
 
-/**
- * @author tank198435163.com
- */
-public class App {
-  public static void main(final String[] args) {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class KafkaStreamProcessorTest {
+
+  @Test
+  @DisplayName("kafka流式处理")
+  void processStream() {
     val processor = KafkaStreamProcessor.instance();
     val propsBuilder = new PropsBuilder();
-    propsBuilder.addProps("group.id", "demo").addProps("bootstrap.servers", "localhost:9092");
-    processor.<Person>processStream("person",
-            "kafka-flink-person-consumer",
+    Assertions.assertNotNull(propsBuilder);
+    propsBuilder.addProps("topic", "person")
+            .addProps("group.id", "person-consumer")
+            .addProps("bootstrap.servers", "localhost:9092");
+    processor.<Person>processStream("kafka-flink-person-consumer",
             propsBuilder,
             new PersonSchema(),
             stream -> stream.map((MapFunction<Person, String>) Person::getName)
