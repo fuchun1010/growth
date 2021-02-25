@@ -23,7 +23,8 @@ public class KafkaStreamProcessor {
   }
 
   @SneakyThrows
-  public <T> void processStream(@NonNull String topic, @NonNull final String jobName,
+  public <T> void processStream(@NonNull String topic,
+                                @NonNull final String jobName,
                                 @NonNull final PropsBuilder props,
                                 @NonNull final DeserializationSchema<T> schema,
                                 @NonNull final Consumer<DataStreamSource<T>> streamHandler) {
