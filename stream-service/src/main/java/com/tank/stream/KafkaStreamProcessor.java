@@ -6,6 +6,8 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
+import org.apache.flink.api.common.state.StateTtlConfig;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -47,6 +49,14 @@ public class KafkaStreamProcessor {
 
   private KafkaStreamProcessor() {
 
+  }
+
+  private StateTtlConfig initStateTtlConfig() {
+    return StateTtlConfig
+            .newBuilder(Time.days(2))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .build();
   }
 
   private static final KafkaStreamProcessor PROCESSOR = new KafkaStreamProcessor();
