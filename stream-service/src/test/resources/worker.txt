@@ -1,0 +1,2 @@
+lisi,35,driver,bj,5000
+wangwu,27,teacher,cq,7200
