@@ -16,8 +16,9 @@ import static org.apache.flink.table.api.Expressions.$;
 /**
  * @author tank198435163.com
  */
-public class TextProcessor {
+public class TextProcessor implements StreamAction {
 
+  @Override
   @SneakyThrows
   public void process() {
     val env = StreamExecutionEnvironment.getExecutionEnvironment();

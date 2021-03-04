@@ -59,5 +59,6 @@
     <modules>
         <module>lean_algorithm</module>
     <module>stream-service</module>
+    <module>learn-proxy</module>
   </modules>
 </project>
