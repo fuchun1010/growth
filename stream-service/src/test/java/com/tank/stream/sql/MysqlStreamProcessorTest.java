@@ -1,5 +1,6 @@
 package com.tank.stream.sql;
 
+import com.tank.stream.sql.mysql.MysqlStreamProcessor;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
