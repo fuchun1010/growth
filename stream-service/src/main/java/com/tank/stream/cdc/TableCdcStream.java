@@ -11,9 +11,9 @@ import org.apache.kafka.connect.data.Field;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.Struct;
 
-import java.io.PrintStream;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 
 /**
  * @author tank198435163.com
@@ -22,24 +22,28 @@ public class TableCdcStream {
 
   public void processSqlEvent() {
     val configuration = this.initDebeziumCfg();
-    val engine = EmbeddedEngine.create().using(configuration).notifying(record -> {
-      if (Objects.isNull(record)) {
-        return;
-      }
-      Struct value = (Struct) record.value();
-      try {
-        Map<String, Object> valueMap = parseStruct(value);
-        if (CollUtil.isEmpty(valueMap) || valueMap.containsKey("databaseName")) {
-          return;
-        }
-        System.out.println(JSONUtil.toJsonStr(valueMap));
-      } catch (Exception e) {
-        throw e;
-      }
-    }).build();
 
-    val thread = new Thread(engine);
-    thread.start();
+    val engine = EmbeddedEngine.create()
+            .using(configuration)
+            .notifying(record -> {
+              if (Objects.isNull(record)) {
+                return;
+              }
+              Struct value = (Struct) record.value();
+              try {
+                Map<String, Object> valueMap = parseStruct(value);
+                if (CollUtil.isEmpty(valueMap) || valueMap.containsKey("databaseName")) {
+                  return;
+                }
+                System.out.println(JSONUtil.toJsonStr(valueMap));
+              } catch (Exception e) {
+                throw e;
+              }
+            }).build();
+
+//    val thread = new Thread(engine);
+//    thread.start();
+    Executors.newFixedThreadPool(1).execute(engine);
 
   }
 
