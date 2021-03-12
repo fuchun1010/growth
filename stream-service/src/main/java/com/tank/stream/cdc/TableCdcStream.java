@@ -1,5 +1,6 @@
 package com.tank.stream.cdc;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Maps;
@@ -10,6 +11,7 @@ import org.apache.kafka.connect.data.Field;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.Struct;
 
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,17 +26,12 @@ public class TableCdcStream {
       if (Objects.isNull(record)) {
         return;
       }
-      // 只擷取debezium內部的kafkaValue
       Struct value = (Struct) record.value();
       try {
-
-        // 把事件Struct轉成鍵值結構
         Map<String, Object> valueMap = parseStruct(value);
-        // 再轉成jsonString
-        if (valueMap.containsKey("databaseName")) {
+        if (CollUtil.isEmpty(valueMap) || valueMap.containsKey("databaseName")) {
           return;
         }
-
         System.out.println(JSONUtil.toJsonStr(valueMap));
       } catch (Exception e) {
         throw e;
@@ -81,6 +78,9 @@ public class TableCdcStream {
 
   private Map<String, Object> parseStruct(Struct struct) {
     Map<String, Object> structMap = Maps.newHashMap();
+    if (struct == null) {
+      return structMap;
+    }
     Schema schema = struct.schema();
     for (Field field : schema.fields()) {
       String fieldName = field.name();

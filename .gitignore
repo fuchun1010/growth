@@ -12,3 +12,5 @@ stream-service/target
 stream-service/stream-service.iml
 
 dependency-reduced-pom.xml
+
+stream-service/data
