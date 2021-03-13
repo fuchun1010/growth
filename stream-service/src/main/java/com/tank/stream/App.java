@@ -2,6 +2,7 @@ package com.tank.stream;
 
 import cn.hutool.json.JSONUtil;
 import com.tank.stream.common.PropsBuilder;
+import com.tank.stream.kafka.KafkaStreamProcessor;
 import com.tank.stream.pojo.Person;
 import lombok.val;
 import org.apache.flink.api.common.functions.MapFunction;

@@ -1,4 +1,4 @@
-package com.tank.stream;
+package com.tank.stream.kafka;
 
 import com.google.common.base.Preconditions;
 import com.tank.stream.common.PropsBuilder;
