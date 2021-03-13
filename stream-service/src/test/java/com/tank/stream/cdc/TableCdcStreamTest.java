@@ -1,5 +1,6 @@
 package com.tank.stream.cdc;
 
+import cn.hutool.json.JSONUtil;
 import lombok.val;
 import org.junit.jupiter.api.*;
 
@@ -18,7 +19,7 @@ class TableCdcStreamTest {
     val latch = new CountDownLatch(1);
 
     try {
-      this.tableCdcStream.processSqlEvent();
+      this.tableCdcStream.processSqlEvent(value -> System.out.println(JSONUtil.toJsonStr(value)));
       latch.await();
     } catch (Exception e) {
       e.printStackTrace();

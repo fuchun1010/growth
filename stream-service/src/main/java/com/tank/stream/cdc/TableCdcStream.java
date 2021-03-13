@@ -2,7 +2,6 @@ package com.tank.stream.cdc;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Maps;
 import io.debezium.config.Configuration;
 import io.debezium.embedded.EmbeddedEngine;
@@ -14,13 +13,14 @@ import org.apache.kafka.connect.data.Struct;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 /**
  * @author tank198435163.com
  */
 public class TableCdcStream {
 
-  public void processSqlEvent() {
+  public void processSqlEvent(Consumer<Map<String, Object>> dataProcessorOpt) {
     val configuration = this.initDebeziumCfg();
 
     val engine = EmbeddedEngine.create()
@@ -35,7 +35,8 @@ public class TableCdcStream {
                 if (CollUtil.isEmpty(valueMap) || valueMap.containsKey("databaseName")) {
                   return;
                 }
-                System.out.println(JSONUtil.toJsonStr(valueMap));
+//                System.out.println(JSONUtil.toJsonStr(valueMap));
+                dataProcessorOpt.accept(valueMap);
               } catch (Exception e) {
                 throw e;
               }
