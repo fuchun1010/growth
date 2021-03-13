@@ -1,6 +1,9 @@
 package com.tank.stream.util;
 
+import cn.hutool.core.date.DateTime;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.junit.jupiter.api.*;
 
@@ -20,6 +23,15 @@ class ModelParserTest {
     Assertions.assertNotNull(createdEvent);
     Assertions.assertTrue("c".equalsIgnoreCase(createdEvent.getOp()));
     Assertions.assertEquals(12, createdEvent.getFields().size());
+  }
+
+
+  @Test
+  @DisplayName("转成执行泛型model")
+  void toAppointType() {
+    val model = this.instance.toEventModel(this.mockCreated());
+    val order = model.transformTo(OrderV2.class);
+    Assertions.assertNotNull(order);
   }
 
   @BeforeEach
@@ -70,6 +82,42 @@ class ModelParserTest {
   }
 
   private ModelParser instance;
+
+  @Getter
+  @Setter
+  public static class OrderV2 {
+
+    /**
+     * store_code : 0090
+     * driver_mobile : 18719033514
+     * delivery_center : 深圳配送中心
+     * created_at : 2020-04-21T08:58:09Z
+     * confirm_time_type : CHECKED
+     * version : 1
+     * driver_name : 炒着吃
+     * brevity_code : 5696
+     * updated_at : 2020-04-21T08:58:09Z
+     * store_name : 丽阳天下店
+     * code_value : 01w1234567#0087#184
+     * id : 39922
+     * scan_time : 2020-04-21T08:58:10Z
+     */
+
+    private String storeCode;
+    private String driverMobile;
+    private String deliveryCenter;
+    private String createdAt;
+    private String confirmTimeType;
+    private int version;
+    private String driverName;
+    private String brevityCode;
+    private DateTime updatedAt;
+    private String storeName;
+    private String codeValue;
+    private int id;
+    private String scanTime;
+
+  }
 
 
 }
