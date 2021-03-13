@@ -1,61 +1,60 @@
-package com.tank.stream.cdc;
+package com.tank.stream.order;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import io.debezium.config.Configuration;
 import io.debezium.embedded.EmbeddedEngine;
+import io.vavr.collection.Stream;
+import lombok.NonNull;
 import lombok.val;
 import org.apache.kafka.connect.data.Field;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.Struct;
 
 import java.util.Map;
-import java.util.Objects;
+import java.util.StringJoiner;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author tank198435163.com
  */
-public class TableCdcStream {
+public class OrderEventCapture {
 
-  public void processSqlEvent(Consumer<Map<String, Object>> dataProcessorOpt) {
-    val configuration = this.initDebeziumCfg();
+  public <T> void handleTableEvent(@NonNull final Function<Map<String, Object>, T> transformFun,
+                                   @NonNull final Consumer<T> consumerFun,
+                                   @NonNull final String... listenedTables
+  ) {
 
-    val engine = EmbeddedEngine.create()
+    val configuration = this.initOrderTableConfig(listenedTables);
+    val task = EmbeddedEngine.create()
             .using(configuration)
             .notifying(record -> {
-              if (Objects.isNull(record)) {
+              final Struct struct = ((Struct) record.value());
+              final Map<String, Object> result = this.parseStruct(struct);
+              if (CollUtil.isEmpty(result) || result.containsKey("databaseName")) {
                 return;
               }
-              Struct value = (Struct) record.value();
-              try {
-                Map<String, Object> valueMap = parseStruct(value);
-                if (CollUtil.isEmpty(valueMap) || valueMap.containsKey("databaseName")) {
-                  return;
-                }
-//                System.out.println(JSONUtil.toJsonStr(valueMap));
-                dataProcessorOpt.accept(valueMap);
-              } catch (Exception e) {
-                throw e;
-              }
-            }).build();
+              T model = transformFun.apply(result);
+              consumerFun.accept(model);
+            })
+            .build();
+    executors.execute(task);
+  }
 
-//    val thread = new Thread(engine);
-//    thread.start();
-    Executors.newFixedThreadPool(1).execute(engine);
+  public static OrderEventCapture instance() {
+    return orderEventCapture;
+  }
+
+  private OrderEventCapture() {
 
   }
 
-  /**
-   * init embed debezium configuration
-   *
-   * @return
-   */
-  private Configuration initDebeziumCfg() {
-
-    return Configuration.create()
+  private Configuration initOrderTableConfig(@NonNull final String... tables) {
+    val cfgBuilder = Configuration.create()
             .with("connector.class", "io.debezium.connector.mysql.MySqlConnector")
             .with("offset.storage", "org.apache.kafka.connect.storage.FileOffsetBackingStore")
             .with("offset.storage.file.filename", this.assignFileLocation("offset.dat"))
@@ -72,9 +71,14 @@ public class TableCdcStream {
             .with("database.history.file.filename", this.assignFileLocation("history.dat"))
             .with("database.history.skip.unparseable.ddl", false)
             .with("database.include.list", "demo")
-            //.with("format", "debezium-json")
-            .build();
+            .with("format", "debezium-json");
 
+    val strJoin = new StringJoiner(Stream.of(tables).toList().toCharSeq());
+    strJoin.add(",");
+
+    cfgBuilder.with("table.include.list", strJoin.toString());
+
+    return cfgBuilder.build();
   }
 
   private String assignFileLocation(String fileName) {
@@ -101,4 +105,7 @@ public class TableCdcStream {
     return structMap;
   }
 
+  private final ExecutorService executors = Executors.newFixedThreadPool(1);
+
+  private final static OrderEventCapture orderEventCapture = new OrderEventCapture();
 }
