@@ -22,7 +22,7 @@ import java.util.function.Function;
 /**
  * @author tank198435163.com
  */
-public class OrderEventCapture {
+public class DbEventCapture {
 
   public <T> void handleTableEvent(@NonNull final Function<Map<String, Object>, T> transformFun,
                                    @NonNull final Consumer<T> consumerFun,
@@ -45,11 +45,11 @@ public class OrderEventCapture {
     executors.execute(task);
   }
 
-  public static OrderEventCapture instance() {
+  public static DbEventCapture instance() {
     return orderEventCapture;
   }
 
-  private OrderEventCapture() {
+  private DbEventCapture() {
 
   }
 
@@ -107,5 +107,5 @@ public class OrderEventCapture {
 
   private final ExecutorService executors = Executors.newFixedThreadPool(1);
 
-  private final static OrderEventCapture orderEventCapture = new OrderEventCapture();
+  private final static DbEventCapture orderEventCapture = new DbEventCapture();
 }
