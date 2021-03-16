@@ -1,11 +1,13 @@
 package com.tank.stream.pojo;
 
-import cn.hutool.core.date.DateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.flink.calcite.shaded.com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.sql.Timestamp;
+
 
 /**
  * @author tank198435163.com
@@ -24,9 +26,9 @@ public class OrderV1 {
 
   private String currentStatus;
 
-  private DateTime created;
+  private Timestamp created;
 
-  private DateTime updated;
+  private Timestamp updated;
 
   private Integer payment;
 
