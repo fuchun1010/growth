@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.tank.stream.pojo.Worker;
 import lombok.SneakyThrows;
 import lombok.val;
+import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.ResultKind;
@@ -24,6 +25,9 @@ public class KafkaTopicCreator {
   public void createTopic() {
     val settings = EnvironmentSettings.newInstance().useBlinkPlanner().build();
     val stream = StreamExecutionEnvironment.getExecutionEnvironment();
+
+    stream.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+
     val tableEnvironment = StreamTableEnvironment.create(stream, settings);
 
 
