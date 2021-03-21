@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -31,7 +32,7 @@ class SensorStreamTest {
   @SneakyThrows
   void testStream() {
     val environment = StreamExecutionEnvironment.getExecutionEnvironment();
-
+    Assertions.assertNotNull(environment);
     environment.setParallelism(1);
     environment.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
     environment.getCheckpointConfig().setCheckpointTimeout(60000);
@@ -63,14 +64,15 @@ class SensorStreamTest {
     public void run(SourceContext<Sensor> ctx) throws Exception {
       val random = ThreadLocalRandom.current();
       while (isRunning.get()) {
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+        for (int i = 0; i < 10; i++) {
           val sensor = new Sensor();
-          sensor.setId(StrUtil.format("sensor_{}", i));
-          sensor.setTemperature(BigDecimal.valueOf(random.nextGaussian() * 100).setScale(2, 2));
+          sensor.setId(StrUtil.format("sensor_{}", random.nextInt(10)));
+          sensor.setTemperature(BigDecimal.valueOf(Math.abs(random.nextGaussian() * 100)).setScale(2, 2));
           sensor.setTimestamp(System.currentTimeMillis());
           ctx.collect(sensor);
           TimeUnit.SECONDS.sleep(1);
         }
+        this.cancel();
       }
     }
 

@@ -1,12 +1,12 @@
 package com.tank.stream.pojo;
 
+import com.google.common.base.MoreObjects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
-import static org.apache.flink.shaded.guava18.com.google.common.base.Objects.toStringHelper;
 
 /**
  * @author tank198435163.com
@@ -18,7 +18,9 @@ public class Sensor {
 
   @Override
   public String toString() {
-    return toStringHelper(Sensor.class).add("id", id).add("timestamp", timestamp)
+    return MoreObjects.toStringHelper(Sensor.class)
+            .add("id", id)
+            .add("timestamp", timestamp)
             .add("temperature", temperature == null ? 0L : this.temperature.doubleValue()).toString();
   }
 
