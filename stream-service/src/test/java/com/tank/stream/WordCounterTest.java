@@ -17,4 +17,9 @@ class WordCounterTest {
     wordCounter.count();
   }
 
+  @Test
+  @DisplayName("单词流")
+  void wordsStream() {
+  }
+
 }

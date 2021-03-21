@@ -31,6 +31,8 @@ public class ReducerV1 {
             .returns(Types.INT)
             .reduce((ReduceFunction<Integer>) Integer::sum)
             .print();
+
+    env.execute(this.getClass().getSimpleName());
   }
 
 }
