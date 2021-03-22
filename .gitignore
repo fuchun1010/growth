@@ -1,7 +1,6 @@
 .idea/
 growth.iml
 
-
 lean_algorithm/target
 lean_algorithm/lean_algorithm.iml
 
@@ -14,3 +13,6 @@ stream-service/stream-service.iml
 dependency-reduced-pom.xml
 
 stream-service/data
+
+gogogo/target
+gogogo/gogogo.iml

@@ -60,5 +60,6 @@
         <module>lean_algorithm</module>
     <module>stream-service</module>
     <module>learn-proxy</module>
+    <module>gogogo</module>
   </modules>
 </project>
