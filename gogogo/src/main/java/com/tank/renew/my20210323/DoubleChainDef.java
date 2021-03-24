@@ -58,6 +58,7 @@ public class DoubleChainDef<T> {
 
   public void insert(@NonNull final T target, @NonNull final T data) {
     Node<T> node = this.find(target);
+    //TODO some logical not complete
   }
 
 
