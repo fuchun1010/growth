@@ -58,7 +58,12 @@ public class DoubleChainDef<T> {
 
   public void insert(@NonNull final T target, @NonNull final T data) {
     Node<T> node = this.find(target);
-    //TODO some logical not complete
+    Node<T> newNode = new Node<>(data);
+    newNode.next = node.next;
+    node.next.pre = newNode;
+    node.next = newNode;
+    newNode.pre = node;
+    this.size.incrementAndGet();
   }
 
 
@@ -74,7 +79,15 @@ public class DoubleChainDef<T> {
   }
 
   private Node<T> find(@NonNull final T data) {
-    throw new UnsupportedOperationException("");
+    var tmpPointer = this.root;
+    while (tmpPointer.next != null) {
+      val nextNode = tmpPointer.next;
+      if (nextNode.data.equals(data)) {
+        return nextNode;
+      }
+      tmpPointer = nextNode;
+    }
+    return null;
   }
 
 

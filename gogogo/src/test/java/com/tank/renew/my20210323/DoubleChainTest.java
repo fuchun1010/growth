@@ -37,6 +37,15 @@ class DoubleChainTest {
     Assertions.assertEquals(this.doubleChain.size(), 9);
   }
 
+  @Test
+  @DisplayName("插入")
+  void insert() {
+    IntStream.rangeClosed(1, 10).boxed().forEach(this.doubleChain::add);
+    this.doubleChain.insert(3, 50);
+    Assertions.assertEquals(this.doubleChain.size(), 11);
+    this.doubleChain.print();
+  }
+
   @BeforeEach
   void init() {
     this.doubleChain = new DoubleChainDef<>();
