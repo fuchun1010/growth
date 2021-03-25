@@ -11,4 +11,6 @@ public interface QueueDef<T> {
   T deQueue();
 
   void enQueue(@NonNull final T data);
+
+  int size();
 }
