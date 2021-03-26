@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.val;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -21,22 +22,28 @@ public class LinkedQueueDef<T> implements QueueDef<T> {
   @Override
   public T deQueue() {
     this.counter.decrementAndGet();
-    if (this.root.getData() == null) {
+
+    if (header.get()) {
+      header.set(false);
       this.root = this.root.next;
     }
-    T data = this.root.data;
-    val next = this.root.next;
 
-    if (next == null) {
+    if (this.root == null) {
       return null;
     }
+    Item<T> next = this.root;
 
-    this.root = next;
-    if (next.pre.next != null) {
-      next.pre.next = null;
-    }
+    T value = next.getData();
     next.pre = null;
-    return data;
+    this.root = next.next;
+    if (this.root == null) {
+      return null;
+    }
+    this.root.pre = null;
+    next.next = null;
+
+
+    return value;
   }
 
   @Override
@@ -56,6 +63,7 @@ public class LinkedQueueDef<T> implements QueueDef<T> {
   private Item<T> root;
   private Item<T> pointer;
   private final AtomicInteger counter = new AtomicInteger(0);
+  private final AtomicBoolean header = new AtomicBoolean(true);
 
   @Getter
   @Setter

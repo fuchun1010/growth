@@ -16,6 +16,7 @@ class LinkedQueueDefTest {
   @DisplayName("出队")
   void deQueue() {
     IntStream.rangeClosed(1, 10).boxed().forEach(this.queueDef::enQueue);
+    Assertions.assertEquals(this.queueDef.size(), 10);
     while (true) {
       val result = this.queueDef.deQueue();
       if (result != null) {
