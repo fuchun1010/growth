@@ -32,16 +32,18 @@ public class DoubleChain<K, V> {
     counter.incrementAndGet();
   }
 
-  public void delHead() {
+  public K delHead() {
     if (this.counter.get() == 0) {
-      return;
+      return null;
     }
     val currentHead = this.next.getNext();
-
+    K key;
     if (currentHead == this.next) {
+      key = this.head.getKey();
       this.head = null;
       this.next = null;
     } else {
+      key = this.head.getKey();
       val newHead = currentHead.getNext();
       this.next.setNext(newHead);
       newHead.setPrev(null);
@@ -52,6 +54,7 @@ public class DoubleChain<K, V> {
 
     this.counter.decrementAndGet();
 
+    return key;
   }
 
   public int size() {

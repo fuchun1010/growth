@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface LfuDef<K, V> {
 
   Optional<CacheNode<K, V>> find(@NonNull final K key);
+
+  void init(@NonNull final CacheNode<K, V>... cacheNodes);
 }
