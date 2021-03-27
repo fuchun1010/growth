@@ -4,8 +4,10 @@ import lombok.NonNull;
 
 import java.util.Optional;
 
-public interface LfuDef<I, T> {
+/**
+ * @author tank198435163.com
+ */
+public interface LfuDef<K, V> {
 
-  Optional<T> findAny(@NonNull final I input);
-
+  Optional<CacheNode<K, V>> find(@NonNull final K key);
 }
