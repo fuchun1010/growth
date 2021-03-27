@@ -13,7 +13,7 @@ public class ArrayQueueDef<T> implements QueueDef<T> {
 
   @SuppressWarnings("unchecked")
   public ArrayQueueDef(@NonNull Class<T> clazz) {
-    defaultSize = 1 << 2;
+    defaultSize = this.tableSizeFor(1 << 4);
     this.clazz = clazz;
     this.arr = (T[]) Array.newInstance(clazz, defaultSize);
   }
@@ -62,6 +62,17 @@ public class ArrayQueueDef<T> implements QueueDef<T> {
     this.arr = tmpArr;
   }
 
+  private int tableSizeFor(int capacity) {
+    int result = capacity - 1;
+    result |= result >>> 1;
+    result |= result >>> 2;
+    result |= result >>> 4;
+    result |= result >>> 8;
+    result |= result >>> 16;
+
+    return result < 0 ? 1 : result >= MAX_SIZE ? MAX_SIZE : result + 1;
+  }
+
   private final AtomicInteger size = new AtomicInteger(0);
   private final AtomicInteger head = new AtomicInteger(0);
 
@@ -70,4 +81,6 @@ public class ArrayQueueDef<T> implements QueueDef<T> {
   private int defaultSize;
 
   private Class<T> clazz;
+
+  private final int MAX_SIZE = 1 << 30;
 }
