@@ -1,16 +1,20 @@
 package com.tank.renew.guess;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import io.vavr.collection.Stream;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.junit.jupiter.api.*;
+import org.junit.platform.commons.util.Preconditions;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -67,16 +71,40 @@ class MapTest {
     Assertions.assertNotNull(arr[index]);
     Assertions.assertEquals("hello", arr[index]);
     System.out.println(arr[index]);
+  }
 
+  @Test
+  @DisplayName("debug hash map implements")
+  void testPut() {
+    val raw = new HashMap<Integer, String>(1 << 4);
+    IntStream.rangeClosed(1, 592)
+            .forEach(index -> raw.put(index, String.valueOf(index)));
+    val mappWrapper = Maps.newHashMap(raw);
+    Assertions.assertFalse(raw.isEmpty());
+  }
 
+  @Test
+  @DisplayName("测试数组链表")
+  void testAddForPointerArr() {
+    val list = IntStream.rangeClosed(1, 20)
+            .boxed()
+            .map(String::valueOf)
+            .map("hello"::concat)
+            .collect(Collectors.toList());
+    Assertions.assertFalse(list.isEmpty());
+    val pointerArr = new PointerArr();
+    list.forEach(pointerArr::add);
+    this.pointerArr.print();
   }
 
   @BeforeEach
   void initialize() {
     this.mappings = Maps.newConcurrentMap();
+    this.pointerArr = new PointerArr();
     IntStream.rangeClosed(1, 10)
             .boxed()
             .forEach(index -> this.mappings.put(index, String.valueOf(index)));
+
   }
 
   private static class MapOperatorTask implements Runnable {
@@ -92,14 +120,58 @@ class MapTest {
       while (iterator.hasNext()) {
         val next = iterator.next();
         iterator.remove();
-        Assertions.assertNotNull(next);
         TimeUnit.SECONDS.sleep(1);
-        Assertions.assertNotNull(next.getValue());
         System.out.println(StrUtil.format("Thread: [{}], value:[{}]", Thread.currentThread().getName(), next.getValue()));
       }
     }
 
-    private Map<Integer, String> mappings;
+    private final Map<Integer, String> mappings;
+  }
+
+
+  private static class PointerArr {
+
+    public void add(@NonNull String data) {
+      Preconditions.condition(StrUtil.isNotBlank(data), "not allowed empty string");
+      if (ArrayUtil.isEmpty(tab)) {
+        tab = new Node[1 << 2];
+      }
+      int index = Math.abs(Objects.hash(data)) & (tab.length - 1);
+      if (Objects.isNull(tab[index])) {
+        tab[index] = new Node(data, null);
+      } else {
+        val backNode = tab[index];
+        tab[index] = new Node(data, null);
+        tab[index].next = backNode;
+      }
+    }
+
+
+    public void print() {
+      if (Objects.isNull(this.tab)) {
+        return;
+      }
+      for (Node node : this.tab) {
+        while (node != null) {
+          System.out.println(node.getData());
+          node = node.next;
+        }
+      }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class Node {
+
+      private String data;
+
+      private Node next;
+
+    }
+
+    private static Node[] tab;
   }
 
   @Getter
@@ -112,4 +184,6 @@ class MapTest {
   }
 
   private Map<Integer, String> mappings;
+
+  private PointerArr pointerArr;
 }
