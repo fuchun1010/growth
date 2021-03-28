@@ -3,6 +3,7 @@ package com.tank.renew.my20210326;
 import lombok.val;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -16,7 +17,7 @@ class LfuDefImplTest {
   @DisplayName("查询命中")
   void find() {
     val result = this.lfuDef.find(1);
-    Assertions.assertEquals("1", result);
+    Assertions.assertEquals("1", result.get());
   }
 
   @BeforeEach
@@ -24,7 +25,7 @@ class LfuDefImplTest {
   @SuppressWarnings("unchecked")
   void init() {
     this.lfuDef = new LfuDefImpl<>();
-    val collect = IntStream.rangeClosed(1, 10)
+    final List<CacheNode<Integer, String>> collect = IntStream.rangeClosed(1, 10)
             .boxed()
             .map(index -> {
               val cacheNode = new CacheNode<Integer, String>();

@@ -1,6 +1,8 @@
 package com.tank.renew.my20210326;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -12,7 +14,13 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
+@NoArgsConstructor
 public class CacheNode<K, V> {
+
+  public CacheNode(@NonNull final K key, @NonNull final V value) {
+    this.key = key;
+    this.value = value;
+  }
 
   private K key;
 
