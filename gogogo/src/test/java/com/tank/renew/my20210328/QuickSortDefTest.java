@@ -14,8 +14,8 @@ class QuickSortDefTest {
   @DisplayName("测试排序")
   void sort() {
     final Integer[] target = {5, 3, 4, 9, 8, 6, 1};
-    final Integer[] result = this.quickSortDef.sort(this.target);
-    Assertions.assertEquals(result.length, this.target.length);
+    final Integer[] result = this.quickSortDef.sort(target);
+    Assertions.assertEquals(result.length, target.length);
     Assertions.assertEquals(result[0].intValue(), 1);
     Assertions.assertEquals(result[result.length - 1].intValue(), 9);
   }
