@@ -60,6 +60,16 @@ class MapTest {
     Assertions.assertEquals(index, 16);
   }
 
+  @Test
+  @DisplayName("计算hashCode")
+  void testHashcode() {
+    val name = "tank";
+    int h = 0;
+    h = (Objects.hashCode(name)) ^ (h >>> 16);
+    Assertions.assertTrue(h == Objects.hashCode(name));
+  }
+  
+
   @DisplayName("将天转为日期")
   @ParameterizedTest
   @ValueSource(ints = {52, 53})
@@ -227,6 +237,19 @@ class MapTest {
     private String orderNo;
 
     private String channel;
+  }
+
+  @Getter
+  @Setter
+  private static class Person implements Comparable<Person> {
+
+    @Override
+    public int compareTo(@NonNull final Person person) {
+      Stream.of(this.getCardId(), person.getCardId()).forEach(cardId -> Preconditions.notBlank(cardId, "card id not allowed empty"));
+      return person.getCardId().compareTo(this.getCardId());
+    }
+
+    private String cardId;
   }
 
   private Map<Integer, String> mappings;
