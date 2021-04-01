@@ -1,5 +1,8 @@
 package com.tank.renew.guess;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
@@ -7,6 +10,8 @@ import io.vavr.collection.Stream;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.platform.commons.util.Preconditions;
 
 import java.util.HashMap;
@@ -24,6 +29,14 @@ import java.util.stream.IntStream;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MapTest {
 
+  @DisplayName("参数化")
+  @ParameterizedTest
+  @ValueSource(strings = {"hello", "world"})
+  void add(@NonNull final String str) {
+    Assertions.assertTrue(str.length() > 0);
+  }
+
+
   @Test
   @DisplayName("遍历过程中删除")
   void testRemove() {
@@ -39,6 +52,30 @@ class MapTest {
 
     Assertions.assertEquals(this.mappings.size(), 0);
   }
+
+  @Test
+  @DisplayName("测试table-size")
+  void testTableSize() {
+    val index = this.tableSize(9);
+    Assertions.assertEquals(index, 16);
+  }
+
+  @DisplayName("将天转为日期")
+  @ParameterizedTest
+  @ValueSource(ints = {52, 53})
+  void calculateDateFromDay(int offsetDay) {
+    val DEFAULT_ERROR = "-";
+    val startOfYear = Stream.of(DateTime.now().year())
+            .map(String::valueOf)
+            .map(year -> year.concat("-01").concat("-01")).findLast(year -> year.trim().length() > 0)
+            .getOrElse(DEFAULT_ERROR);
+    Assertions.assertNotEquals(DEFAULT_ERROR, startOfYear);
+    val dateStr = DateTime.of(startOfYear, DatePattern.NORM_DATE_PATTERN)
+            .offset(DateField.DAY_OF_YEAR, offsetDay)
+            .toDateStr();
+    System.out.println("date = " + dateStr);
+  }
+
 
   @Test
   @SneakyThrows
@@ -105,6 +142,15 @@ class MapTest {
             .boxed()
             .forEach(index -> this.mappings.put(index, String.valueOf(index)));
 
+  }
+
+  private int tableSize(int cap) {
+    var result = cap - 1;
+    for (Integer offset : Stream.of(1, 2, 4, 8, 16)) {
+      result |= result >>> offset;
+    }
+    val capacity = 1 << 30;
+    return result < 0 ? 1 : (result > capacity ? result : result + 1);
   }
 
   private static class MapOperatorTask implements Runnable {

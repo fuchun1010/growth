@@ -30,6 +30,15 @@ class MarkIndexTest {
   void splitIndex3() {
     this.markIndex = new DoubleSlideImpl<>();
     Integer[] arr = new Integer[]{10, 2, 1, 9, 6, 14, 3};
+    val result = this.markIndex.splitIndex(arr, 0, arr.length - 1);
+    Assertions.assertEquals(3, result);
+  }
+
+  @Test
+  @DisplayName("双指针切分寻找index4")
+  void splitIndex4() {
+    this.markIndex = new DoubleSlideImpl<>();
+    Integer[] arr = new Integer[]{5, 4, 3, 9, 8, 6, 1};
     val result = this.markIndex.splitIndex(arr, 0, this.arr.length - 1);
     Assertions.assertEquals(3, result);
   }
