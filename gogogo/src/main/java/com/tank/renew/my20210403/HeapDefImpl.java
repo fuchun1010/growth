@@ -45,8 +45,9 @@ public class HeapDefImpl<T extends Comparable<T>> implements HeapDef<T> {
   }
 
   private void siftDown(T[] result, int index) {
-    T target = result[index];
-    while (index < this.size) {
+    T target = result[0];
+    int half = this.size >> 1;
+    while (index < half) {
       int leftIndex = this.leftIndex(index);
       int rightIndex = this.rightIndex(index);
       if (rightIndex > this.size) {
@@ -76,6 +77,7 @@ public class HeapDefImpl<T extends Comparable<T>> implements HeapDef<T> {
       }
       index = parentIndex;
     }
+
   }
 
   private int leftIndex(@NonNull final Integer index) {

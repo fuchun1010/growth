@@ -43,19 +43,23 @@ class HeapDefTest {
   @Test
   @DisplayName("构建堆")
   void buildHeap() {
-    val result = this.heapDef.buildHeap(this.array, Integer.class);
-    Assertions.assertEquals(result[0].intValue(), 11);
-    Assertions.assertEquals(result[1].intValue(), 9);
-    Assertions.assertEquals(result[2].intValue(), 2);
+    final Integer[] arr = {13, 11, 12, 26, 9, 24, 30, 28, 3, 7, 6, 29, 17, 18, 16, 10};
+    val result = this.heapDef.buildHeap(arr, Integer.class);
+    Assertions.assertEquals(result[0].intValue(), 30);
+    Assertions.assertEquals(result[1].intValue(), 28);
+    Assertions.assertEquals(result[2].intValue(), 29);
+    Assertions.assertEquals(result[arr.length - 1].intValue(), 10);
   }
 
   @Test
   @DisplayName("删除头节点")
   void removeRoot() {
-    //{13, 11, 12, 26, 9, 24, 30, 28, 3, 7, 6, 29, 17, 18, 16, 10}
-    this.heapDef.buildHeap(this.array, Integer.class);
+    final Integer[] arr = {13, 11, 12, 26, 9, 24, 30, 28, 3, 7, 6, 29, 17, 18, 16, 10};
+    val sortedResult = this.heapDef.buildHeap(arr, Integer.class);
+    Assertions.assertEquals(sortedResult[0].intValue(), 30);
+    Assertions.assertEquals(sortedResult[arr.length - 1].intValue(), 10);
     val result = this.heapDef.removeRoot();
-    Assertions.assertEquals(result.intValue(), 11);
+    Assertions.assertEquals(result.intValue(), 30);
   }
 
 
