@@ -3,6 +3,8 @@ package com.tank.renew.my20210330;
 import lombok.NonNull;
 
 /**
+ * 快排
+ *
  * @param <T>
  * @author tank198435163.com
  */
