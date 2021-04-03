@@ -11,4 +11,6 @@ public interface HeapDef<T extends Comparable<T>> {
   int size();
 
   T[] buildHeap(@NonNull final T[] array, @NonNull final Class<T> clazz);
+
+  T removeRoot();
 }

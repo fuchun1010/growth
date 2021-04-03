@@ -49,6 +49,15 @@ class HeapDefTest {
     Assertions.assertEquals(result[2].intValue(), 2);
   }
 
+  @Test
+  @DisplayName("删除头节点")
+  void removeRoot() {
+    //{13, 11, 12, 26, 9, 24, 30, 28, 3, 7, 6, 29, 17, 18, 16, 10}
+    this.heapDef.buildHeap(this.array, Integer.class);
+    val result = this.heapDef.removeRoot();
+    Assertions.assertEquals(result.intValue(), 11);
+  }
+
 
   @BeforeEach
   void initialize() {
