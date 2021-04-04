@@ -49,6 +49,7 @@ class HeapDefTest {
     Assertions.assertEquals(result[1].intValue(), 28);
     Assertions.assertEquals(result[2].intValue(), 29);
     Assertions.assertEquals(result[arr.length - 1].intValue(), 10);
+    int permission = 0b0101;
   }
 
   @Test
