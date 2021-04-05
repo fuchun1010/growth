@@ -15,8 +15,16 @@ public interface TreeDef<T, I extends AbTreeNode<T>> {
    */
   void addNode(final I parentNode, final I node);
 
+  /**
+   * print every node of tree
+   */
   void print();
 
+  /**
+   * node number
+   *
+   * @return
+   */
   int size();
 
 }

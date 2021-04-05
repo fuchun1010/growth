@@ -1,5 +1,6 @@
 package com.tank.renew.my20210404;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.NonNull;
 import lombok.val;
 
@@ -29,6 +30,8 @@ public class MultiNodeTree<T, I extends AbTreeNode<T>> implements TreeDef<T, I> 
     if (Objects.nonNull(target) && (target instanceof TreeNode)) {
       TreeNode<T> treeNode = ((TreeNode<T>) target);
       treeNode.getChildren().add(node);
+    } else {
+      this.root.getChildren().add(node);
     }
     this.next = this.root;
 
@@ -58,7 +61,7 @@ public class MultiNodeTree<T, I extends AbTreeNode<T>> implements TreeDef<T, I> 
   private void printData(@NonNull final AbTreeNode node) {
     val data = node.getData();
     if (Objects.nonNull(data)) {
-      System.out.println("data = " + data);
+      System.out.println(StrUtil.format("data:[{}]", data.toString()));
     }
   }
 

@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class AbTreeNode<T> implements Element {
+public abstract class AbTreeNode<T> {
 
   private T data;
 }

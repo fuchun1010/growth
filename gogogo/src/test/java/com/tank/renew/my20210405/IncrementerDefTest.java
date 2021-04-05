@@ -11,7 +11,7 @@ class IncrementerDefTest {
   void incrementWithLock() {
     Assertions.assertNotNull(this.incrementerDef);
     this.incrementerDef.increment();
-    Assertions.assertEquals(this.incrementerDef.getCounter(), 335544320);
+    Assertions.assertEquals(this.incrementerDef.getCounter(), expect);
   }
 
   @Test
@@ -20,7 +20,7 @@ class IncrementerDefTest {
     IncrementerDef incrementerDef = new IncrementWithCas();
     Assertions.assertNotNull(incrementerDef);
     incrementerDef.increment();
-    Assertions.assertEquals(incrementerDef.getCounter(), 335544320);
+    Assertions.assertEquals(incrementerDef.getCounter(), expect);
   }
 
   @BeforeEach
@@ -30,4 +30,6 @@ class IncrementerDefTest {
   }
 
   private IncrementerDef incrementerDef;
+
+  private final int expect = 335544320;
 }
