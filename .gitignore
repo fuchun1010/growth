@@ -16,3 +16,6 @@ stream-service/data
 
 gogogo/target
 gogogo/gogogo.iml
+
+.DS_Store
+stream-service/.DS_Store
