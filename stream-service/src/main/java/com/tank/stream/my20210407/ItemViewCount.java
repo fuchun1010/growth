@@ -14,11 +14,20 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class UserViewCount {
+public class ItemViewCount {
 
   private Long itemId;
 
   private Long counter;
 
   private Long timestamp;
+
+  @Override
+  public String toString() {
+    return "ItemViewCount{" +
+            "itemId=" + itemId +
+            ", counter=" + counter +
+            ", timestamp=" + timestamp +
+            '}';
+  }
 }
