@@ -63,7 +63,7 @@ public class TopStream {
             WatermarkStrategy.<UserBehave>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                     .withTimestampAssigner((a, b) -> a.getTimestamp() * 1000)
     );
-    
+
     val allWindow = new WindowFunction<Long, ItemViewCount, Long, TimeWindow>() {
 
       @Override
@@ -154,6 +154,6 @@ public class TopStream {
 
     private ListState<ItemViewCount> itemViewCountListState;
 
-    private Integer n;
+    private final Integer n;
   }
 }
