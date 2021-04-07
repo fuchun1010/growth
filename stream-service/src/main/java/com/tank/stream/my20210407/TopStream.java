@@ -77,7 +77,8 @@ public class TopStream {
     DataStream<ItemViewCount> itemViewCountDataStream = streamOperator
             .keyBy((KeySelector<UserBehave, Long>) UserBehave::getItemId)
             .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(5)))
-            .aggregate(new ItemCountAgg(), allWindow);
+            .aggregate(new ItemCountAgg(), allWindow)
+            .uid("itemIdCount");
 
 
     DataStream<String> result = itemViewCountDataStream
