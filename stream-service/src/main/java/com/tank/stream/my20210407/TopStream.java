@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.val;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -18,7 +19,6 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.AscendingTimestampExtractor;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
@@ -27,6 +27,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 
 import static java.lang.Long.parseLong;
 
@@ -68,13 +69,12 @@ public class TopStream {
       }
     };
 
-    DataStream<ItemViewCount> itemViewCountDataStream = behaveStream.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<UserBehave>() {
-      @Override
-      public long extractAscendingTimestamp(UserBehave element) {
-        return element.getTimestamp() * 1000L;
-      }
-    })
-            .keyBy((KeySelector<UserBehave, Long>) UserBehave::getItemId)
+    val streamOperator = behaveStream.assignTimestampsAndWatermarks(
+            WatermarkStrategy.<UserBehave>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                    .withTimestampAssigner((a, b) -> a.getTimestamp())
+    );
+
+    DataStream<ItemViewCount> itemViewCountDataStream = streamOperator.keyBy((KeySelector<UserBehave, Long>) UserBehave::getItemId)
             .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(5)))
             .aggregate(new ItemCountAgg(), allWindow);
 
