@@ -14,7 +14,6 @@ import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -82,7 +81,7 @@ public class TopStream {
 
 
     DataStream<String> result = itemViewCountDataStream
-            .keyBy("timestamp")
+            .keyBy((KeySelector<ItemViewCount, Long>) ItemViewCount::getTimestamp)
             .process(new Top(5))
             .uid("window_end");
 
@@ -116,7 +115,7 @@ public class TopStream {
   }
 
 
-  private static class Top extends KeyedProcessFunction<Tuple, ItemViewCount, String> {
+  private static class Top extends KeyedProcessFunction<Long, ItemViewCount, String> {
 
     public Top(@NonNull final Integer n) {
       this.n = n;
