@@ -12,6 +12,7 @@ import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.CheckpointingMode;
@@ -20,6 +21,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.AscendingTimestampExtractor;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
@@ -57,17 +59,12 @@ public class TopStream {
             .uid("pv");
 
 
-    val allWind = new WindowFunction<Long, ItemViewCount, Tuple, TimeWindow>() {
+    val allWindow = new WindowFunction<Long, ItemViewCount, Long, TimeWindow>() {
 
       @Override
-      public void apply(Tuple tuple, TimeWindow
-              window, Iterable<Long> input, Collector<ItemViewCount> out) throws Exception {
-
-        Long itemId = tuple.getField(0);
-        Long timeStamp = window.getEnd();
-        val counter = input.iterator().next();
-        val itemViewCount = new ItemViewCount().setCounter(counter).setItemId(itemId).setTimestamp(timeStamp);
-        out.collect(itemViewCount);
+      public void apply(Long itemId, TimeWindow window, Iterable<Long> input, Collector<ItemViewCount> out) throws Exception {
+        val viewCount = new ItemViewCount().setItemId(itemId).setTimestamp(window.getEnd()).setCounter(input.iterator().next());
+        out.collect(viewCount);
       }
     };
 
@@ -77,14 +74,15 @@ public class TopStream {
         return element.getTimestamp() * 1000L;
       }
     })
-            .keyBy("itemId")
-            .timeWindow(Time.hours(1), Time.minutes(5))
-            .aggregate(new ItemCountAgg(), allWind);
+            .keyBy((KeySelector<UserBehave, Long>) UserBehave::getItemId)
+            .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(5)))
+            .aggregate(new ItemCountAgg(), allWindow);
 
 
     DataStream<String> result = itemViewCountDataStream
             .keyBy("timestamp")
-            .process(new Top(5));
+            .process(new Top(5))
+            .uid("window_end");
 
     result.print("only print");
 
