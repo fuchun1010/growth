@@ -125,7 +125,7 @@ public class TopStream {
     @Override
     public void open(Configuration parameters) throws Exception {
       super.open(parameters);
-      this.itemViewCountListState = super.getRuntimeContext().getListState(new ListStateDescriptor<ItemViewCount>("itemViewCountList", ItemViewCount.class));
+      this.itemViewCountListState = super.getRuntimeContext().getListState(new ListStateDescriptor<>("itemViewCountList", ItemViewCount.class));
     }
 
     @Override
