@@ -71,7 +71,7 @@ public class TopStream {
 
     val streamOperator = behaveStream.assignTimestampsAndWatermarks(
             WatermarkStrategy.<UserBehave>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-                    .withTimestampAssigner((a, b) -> a.getTimestamp())
+                    .withTimestampAssigner((a, b) -> a.getTimestamp() * 1000)
     );
 
     DataStream<ItemViewCount> itemViewCountDataStream = streamOperator.keyBy((KeySelector<UserBehave, Long>) UserBehave::getItemId)
