@@ -59,6 +59,11 @@ public class TopStream {
             .uid("pv");
 
 
+    val streamOperator = behaveStream.assignTimestampsAndWatermarks(
+            WatermarkStrategy.<UserBehave>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                    .withTimestampAssigner((a, b) -> a.getTimestamp() * 1000)
+    );
+    
     val allWindow = new WindowFunction<Long, ItemViewCount, Long, TimeWindow>() {
 
       @Override
@@ -67,11 +72,6 @@ public class TopStream {
         out.collect(viewCount);
       }
     };
-
-    val streamOperator = behaveStream.assignTimestampsAndWatermarks(
-            WatermarkStrategy.<UserBehave>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-                    .withTimestampAssigner((a, b) -> a.getTimestamp() * 1000)
-    );
 
     DataStream<ItemViewCount> itemViewCountDataStream = streamOperator
             .keyBy((KeySelector<UserBehave, Long>) UserBehave::getItemId)
