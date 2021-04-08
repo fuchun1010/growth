@@ -11,6 +11,7 @@ public class IncrementWithCas extends IncrementerDef {
   }
 
   private synchronized boolean compareAndSet(int expected, int newValue) {
+
     if (counter == expected) {
       counter = newValue;
       return true;
