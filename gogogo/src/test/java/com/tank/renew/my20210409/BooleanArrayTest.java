@@ -16,7 +16,7 @@ class BooleanArrayTest {
 
   @Test
   void set() {
-    this.booleanArray.set(11, true);
+    this.booleanArray.assign(11, true);
     val hited = this.booleanArray.hit(11);
     Assertions.assertTrue(hited);
     Assertions.assertFalse(this.booleanArray.hit(0));

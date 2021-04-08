@@ -38,7 +38,7 @@ public class BooleanArray {
    * @param index
    * @param value
    */
-  public void set(int index, boolean value) {
+  public void assign(int index, boolean value) {
     if (index >= size || index < 0) {
       throw new IndexOutOfBoundsException();
     }
