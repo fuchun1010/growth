@@ -11,14 +11,10 @@ import org.junit.jupiter.api.*;
 class BooleanArrayTest {
 
   @Test
-  void hit() {
-  }
-
-  @Test
-  void set() {
+  void assign() {
     this.booleanArray.assign(11, true);
-    val hited = this.booleanArray.hit(11);
-    Assertions.assertTrue(hited);
+    val hit = this.booleanArray.hit(11);
+    Assertions.assertTrue(hit);
     Assertions.assertFalse(this.booleanArray.hit(0));
   }
 
@@ -52,6 +48,25 @@ class BooleanArrayTest {
   void init() {
     this.booleanArray = new BooleanArray(25);
   }
+
+
+  @Test
+  void obtain() {
+    val cap = this.tableSize(126);
+    Assertions.assertEquals(cap, 128);
+    val len = (cap >> 3) + 1;
+    Assertions.assertEquals(len, 17);
+    byte[] arr = new byte[len];
+    val num = 31;
+
+    val index = num >> 3;
+
+    val mod = num & (len - 1);
+    val result = (arr[index] & (1 << mod)) == 0;
+    Assertions.assertFalse(result);
+
+  }
+
 
   private int tableSize(int capacity) {
     var result = capacity - 1;
