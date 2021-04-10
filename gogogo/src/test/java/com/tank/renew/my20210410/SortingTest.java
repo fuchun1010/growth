@@ -52,6 +52,15 @@ class SortingTest {
     Assertions.assertEquals(9, result[4].intValue());
   }
 
+  @Test
+  @DisplayName("桶排序")
+  void sortV5() {
+    Assertions.assertNotNull(this.bucketV1);
+    Integer[] arr = {7, 5, 3, 4, 9, 1, 2};
+    val result = this.bucketV1.sort(arr);
+    Assertions.assertNotNull(result);
+  }
+
 
   @Test
   @DisplayName("测试是否是冥等")
@@ -66,9 +75,10 @@ class SortingTest {
 
   @BeforeEach
   void initialize() {
-    this.sortingV1 = new SortingV1();
-    this.sortingV2 = new SortingV2();
-    this.sortingV3 = new SortingV3();
+    this.sortingV1 = new CounterSortingV1();
+    this.sortingV2 = new CounterSortingV2();
+    this.sortingV3 = new CounterSortingV3();
+    this.bucketV1 = new BucketSortingV1();
   }
 
   private Sorting sortingV1;
@@ -76,6 +86,8 @@ class SortingTest {
   private Sorting sortingV2;
 
   private Sorting sortingV3;
+
+  private Sorting bucketV1;
 
   private final Integer[] arr = {7, 5, 3, 4, 9};
 }

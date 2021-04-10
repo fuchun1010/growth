@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * @author tank198435163.com
  */
-public class SortingV3 implements Sorting {
+public class CounterSortingV3 implements Sorting {
 
   @Override
   public Integer[] sort(@NonNull Integer[] source) {
