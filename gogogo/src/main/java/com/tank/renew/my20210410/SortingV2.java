@@ -7,41 +7,48 @@ import lombok.var;
 import java.util.Objects;
 
 /**
- * Note implements
- * simple counter sorting
- *
  * @author tank198435163.com
  */
-public class SortingV1 implements Sorting {
-
+public class SortingV2 implements Sorting {
   @Override
   public Integer[] sort(@NonNull Integer[] source) {
+
     var max = source[0];
+    var min = source[0];
+
     for (int index = 1; index < source.length; index++) {
-      val tmp = source[index];
+      var tmp = source[index];
       if (tmp > max) {
         max = tmp;
       }
+      if (tmp < min) {
+        min = tmp;
+      }
     }
-    val len = max + 1;
+
+    int len = max - min + 1;
+
     final Integer[] newArr = new Integer[len];
 
-    for (Integer value : source) {
-      if (Objects.isNull(newArr[value])) {
-        newArr[value] = 0;
+    for (int index = 0; index < source.length; index++) {
+      val newIndex = source[index] - min;
+      if (Objects.isNull(newArr[newIndex])) {
+        newArr[newIndex] = 0;
       }
-      newArr[value] += 1;
+      newArr[newIndex] += 1;
     }
 
-    var i = 0;
     final Integer[] result = new Integer[source.length];
+    int i = 0;
+
     for (int index = 0; index < newArr.length; index++) {
-      if (newArr[index] == null) {
+      val value = newArr[index];
+      if (Objects.isNull(value)) {
         continue;
       }
-      result[i++] = index;
+      result[i++] = index + min;
     }
+
     return result;
   }
-
 }
