@@ -51,7 +51,7 @@ public class MaxConcurrencyReq {
         });
       }
 
-      if (!deque.isEmpty()) {
+      if (deque.size() != maxConcurrency) {
         multiFetchFrom(deque);
       }
 
