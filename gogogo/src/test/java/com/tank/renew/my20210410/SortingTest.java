@@ -27,15 +27,55 @@ class SortingTest {
     Assertions.assertEquals(75, result[0].intValue());
   }
 
+  @Test
+  @DisplayName("处理并列数据的排序")
+  void sortV3() {
+    final Integer[] arr = {90, 99, 95, 94, 95};
+    Assertions.assertNotNull(this.sortingV3);
+    val result = this.sortingV3.sort(arr);
+    Assertions.assertEquals(90, result[0].intValue());
+    Assertions.assertEquals(94, result[1].intValue());
+    Assertions.assertEquals(95, result[2].intValue());
+    Assertions.assertEquals(95, result[3].intValue());
+    Assertions.assertEquals(99, result[4].intValue());
+  }
+
+  @Test
+  @DisplayName("处理并列数据的排序")
+  void sortV4() {
+    Assertions.assertNotNull(this.sortingV3);
+    val result = this.sortingV3.sort(this.arr);
+    Assertions.assertEquals(3, result[0].intValue());
+    Assertions.assertEquals(4, result[1].intValue());
+    Assertions.assertEquals(5, result[2].intValue());
+    Assertions.assertEquals(7, result[3].intValue());
+    Assertions.assertEquals(9, result[4].intValue());
+  }
+
+
+  @Test
+  @DisplayName("测试是否是冥等")
+  void testPower() {
+    val a = 2;
+    val b = 3;
+    val c = 4;
+    Assertions.assertEquals(0, a & (a - 1));
+    Assertions.assertNotEquals(0, b & (b - 1));
+    Assertions.assertEquals(0, c & (c - 1));
+  }
+
   @BeforeEach
   void initialize() {
     this.sortingV1 = new SortingV1();
     this.sortingV2 = new SortingV2();
+    this.sortingV3 = new SortingV3();
   }
 
   private Sorting sortingV1;
 
   private Sorting sortingV2;
+
+  private Sorting sortingV3;
 
   private final Integer[] arr = {7, 5, 3, 4, 9};
 }
