@@ -18,7 +18,7 @@ class LoopChainTest {
   }
 
   @Test
-  @DisplayName("双指针判断")
+  @DisplayName("双指针判断是否是循环链表")
   void isLoopedV2() {
     val looped = this.v2.isLooped(this.root);
     Assertions.assertTrue(looped);
