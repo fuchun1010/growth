@@ -3,12 +3,14 @@ package com.tank.renew.my20210417;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.stream.IntStream;
 
 /**
  * @author tank198435163.com
  */
+@Slf4j
 public class MaxDifferImpl implements MaxDiffer {
 
 
@@ -40,7 +42,6 @@ public class MaxDifferImpl implements MaxDiffer {
 
     for (int value : arr) {
       val index = (value - min) * (length - 1) / differ;
-      System.out.println("index = " + index);
       Bucket bucket = buckets.get(index);
       if (bucket.min == null || bucket.min > value) {
         bucket.min = value;
