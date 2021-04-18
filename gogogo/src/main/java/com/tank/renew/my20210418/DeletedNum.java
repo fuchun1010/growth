@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * note
  * <p>
- * 1593212
+ * 删除k个数字留下的数字最小
  *
  * @author tank198435163.com
  */
