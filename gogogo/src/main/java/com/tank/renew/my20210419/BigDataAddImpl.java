@@ -37,17 +37,15 @@ public class BigDataAddImpl implements BigDataAdd {
     for (int index = secLen - 1; index >= 0; index--) {
       tmpSecond[ind++] = Integer.parseInt(String.valueOf(second.charAt(index)));
     }
-
+    var counter = 0;
     for (int index = 0; index < result.length; index++) {
+      counter = index;
       val tmp = tmpFirst[index] + tmpSecond[index];
-      if (tmp < 10) {
+      if (tmp + result[index] < 10) {
         result[index] += tmp;
       } else {
         result[index] += (tmp - 10);
-        var couter = index + 1;
-        do {
-          result[couter] += 1;
-        } while (result[couter++] >= 10);
+        result[++counter] += 1;
       }
     }
 
@@ -55,7 +53,6 @@ public class BigDataAddImpl implements BigDataAdd {
     for (int i = maxLength - 1; i >= 0; i--) {
       sb.append(result[i]);
     }
-
 
     return sb.toString().charAt(0) == '0' ? sb.toString().substring(1) : sb.toString();
   }

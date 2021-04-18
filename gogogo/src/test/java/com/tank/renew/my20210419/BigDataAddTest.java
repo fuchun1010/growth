@@ -16,7 +16,7 @@ class BigDataAddTest {
   @DisplayName("测试用例1")
   void add() {
     val result = this.v1.add(first, second);
-    Assertions.assertEquals("5221901005267", result);
+    Assertions.assertEquals("522191005267", result);
   }
 
   @Test
@@ -38,7 +38,6 @@ class BigDataAddTest {
   }
 
   @Test
-  @Disabled
   @DisplayName("测试用例4")
   void add4() {
     this.first = "1";
