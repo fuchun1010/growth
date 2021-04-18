@@ -19,7 +19,7 @@ class NearestDefTest {
 
   @Test
   void nearestArray2() {
-    int[] array = {1, 3, 2, 8, 5, 7, 6};
+    int[] array = {1, 3, 2, 8, 5, 7, 6, 89, 11};
     val result = this.v1.nearestArray(array);
     Assertions.assertNotNull(result);
     for (int d : result) {

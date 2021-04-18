@@ -3,17 +3,14 @@ package com.tank.renew.my20210417;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.stream.IntStream;
 
 /**
  * @author tank198435163.com
  */
-@Slf4j
 public class MaxDifferImpl implements MaxDiffer {
-
-
+  
   @Override
   public int maxDistance(@NonNull int[] arr) {
     int length = arr.length;
