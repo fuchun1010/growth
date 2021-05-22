@@ -8,6 +8,7 @@ import lombok.var;
 import java.util.Optional;
 
 /**
+ * [1,2,3,10,13]  26 => [0,1,2]
  * @author tank198435163.com
  */
 public class DefaultThreeAddImpl implements ThreeAdd {

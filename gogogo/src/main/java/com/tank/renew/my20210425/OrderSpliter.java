@@ -9,16 +9,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * 拆单
  * @author tank198435163.com
  */
 public class OrderSpliter {
 
   public Collection<List<Item>> splitted(
           @NonNull final List<Item> items,
-          @NonNull final Queue<String> fields) {
+          @NonNull final Queue<String> props) {
 
-    while (!fields.isEmpty()) {
-      val methodName = StrUtil.format("get{}", fields.remove());
+    while (!props.isEmpty()) {
+      val methodName = StrUtil.format("get{}", props.remove());
       val getter = Arrays.stream(Item.class
               .getDeclaredMethods())
               .filter(method -> method.getName().equalsIgnoreCase(methodName))
@@ -46,11 +47,11 @@ public class OrderSpliter {
           continue;
         }
 
-        if (fields.isEmpty()) {
+        if (props.isEmpty()) {
           lists.add(entry.getValue());
         }
 
-        this.splitted(entry.getValue(), fields);
+        this.splitted(entry.getValue(), props);
       }
 
     }
