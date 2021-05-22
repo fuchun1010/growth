@@ -75,10 +75,10 @@ class MaxDisCountV1Test {
     val goods = Arrays.asList("x", "x", "y", "xyz");
     val c = new int[]{0, 48, 0, 0};
     val v = new int[]{4, 20, 5, 6};
-    val item1 = new Goods().setSku("x").setValue(4).setValue(0);
-    val item2 = new Goods().setSku("x").setValue(20).setValue(48);
-    val item3 = new Goods().setSku("y").setValue(5).setValue(0);
-    val item4 = new Goods().setSku("xyz").setValue(6).setValue(0);
+    val item1 = new Goods().setSku("x").setValue(4).setC(0);
+    val item2 = new Goods().setSku("x").setValue(20).setC(48);
+    val item3 = new Goods().setSku("y").setValue(5).setC(0);
+    val item4 = new Goods().setSku("xyz").setValue(6).setC(0);
     val keys = Maps.<String, Goods>newHashMap();
     for (val item : Arrays.asList(item1, item2, item3, item4)) {
       keys.put(item.getSku(), item);
