@@ -19,7 +19,7 @@ class MaxDisCountV1Test {
     val maxDisCountV1 = new MaxDisCountV1();
     val item1 = new Goods().setSku("x").setC(0).setValue(4);
     val item2 = new Goods().setSku("y").setC(0).setValue(5);
-    val item3 = new Goods().setSku("xyz").setC(9).setValue(6);
+    val item3 = new Goods().setSku("xyz").setC(0).setValue(6);
     val keys = Maps.<String, Goods>newHashMap();
     for (val item : Arrays.asList(item1, item2, item3)) {
       keys.put(item.getSku(), item);
@@ -68,7 +68,6 @@ class MaxDisCountV1Test {
   }
 
 
-
   @Test
   @DisplayName("4商品4活动")
   void discount5() {
@@ -76,10 +75,10 @@ class MaxDisCountV1Test {
     val goods = Arrays.asList("x", "x", "y", "xyz");
     val c = new int[]{0, 48, 0, 0};
     val v = new int[]{4, 20, 5, 6};
-    val item1 = new Goods().setSku("x").setValue(0).setValue(4);
-    val item2 = new Goods().setSku("x").setValue(48).setValue(20);
-    val item3 = new Goods().setSku("y").setValue(0).setValue(5);
-    val item4 = new Goods().setSku("xyz").setValue(0).setValue(6);
+    val item1 = new Goods().setSku("x").setValue(4).setValue(0);
+    val item2 = new Goods().setSku("x").setValue(20).setValue(48);
+    val item3 = new Goods().setSku("y").setValue(5).setValue(0);
+    val item4 = new Goods().setSku("xyz").setValue(6).setValue(0);
     val keys = Maps.<String, Goods>newHashMap();
     for (val item : Arrays.asList(item1, item2, item3, item4)) {
       keys.put(item.getSku(), item);
