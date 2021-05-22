@@ -16,7 +16,7 @@ class MaxDisCountV1Test {
   @DisplayName("3商品3活动")
   void discount() {
     val maxDisCountV1 = new MaxDisCountV1();
-    val goods = Arrays.asList("x", "y", "xyx");
+    val goods = Arrays.asList("x", "y", "xyz");
     val c = new int[]{0, 0, 0};
     val v = new int[]{4, 5, 6};
     val result = maxDisCountV1.discount(goods, c, v);
