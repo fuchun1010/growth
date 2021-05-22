@@ -56,6 +56,17 @@ class MaxDisCountV1Test {
     Assertions.assertEquals(result, 10);
   }
 
+  @Test
+  @DisplayName("4商品4活动")
+  void discount5() {
+    val maxDisCountV1 = new MaxDisCountV1();
+    val goods = Arrays.asList("x", "x", "y", "xyz");
+    val c = new int[]{0, 48, 0, 0};
+    val v = new int[]{4, 20, 5, 6};
+    val result = maxDisCountV1.discount(goods, c, v);
+    Assertions.assertEquals(result, 31);
+  }
+
 
   private MaxDiscount maxDiscount;
 }
