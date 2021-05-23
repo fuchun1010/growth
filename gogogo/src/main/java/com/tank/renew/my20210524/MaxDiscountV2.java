@@ -19,18 +19,16 @@ public class MaxDiscountV2 implements MaxDiscount {
   public int maxAvailableProfit(@NonNull List<Goods> goods, @NonNull List<Discount> discounts) {
     // System.out.println(StrUtil.format("goods = [{}], discounts = [{}]", goods.size(), discounts.size()));
     if (goods.isEmpty()) {
-      System.out.println("===================");
       return 0;
     }
 
     if (discounts.isEmpty()) {
-      System.out.println("===================");
       return 0;
     }
 
     val lastDiscount = Stream.ofAll(discounts).last();
     val fullGood = Stream.ofAll(goods).map(Goods::getSku).toJavaList();
-    Map<String, Integer> fullGoodsMap = Maps.<String, Integer>newHashMap();
+    Map<String, Integer> fullGoodsMap = Maps.newHashMap();
     for (val g : fullGood) {
       if (fullGoodsMap.containsKey(g)) {
         int v = fullGoodsMap.get(g);
