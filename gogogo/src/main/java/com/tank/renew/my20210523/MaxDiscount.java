@@ -3,7 +3,6 @@ package com.tank.renew.my20210523;
 import lombok.NonNull;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author tank198435163.com
@@ -19,7 +18,7 @@ public interface MaxDiscount {
    * @return
    */
   int discount(@NonNull final List<String> goods,
-               @NonNull final int[] c,
-               @NonNull final int[] values,
-               @NonNull final Map<String, Goods> maps);
+               @NonNull final Integer[] c,
+               @NonNull final Integer[] values,
+               @NonNull final List<Goods> maps);
 }
