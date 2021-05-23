@@ -19,6 +19,8 @@ public class Discount {
 
   private int subValue;
 
+  private boolean enabled = true;
+
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)

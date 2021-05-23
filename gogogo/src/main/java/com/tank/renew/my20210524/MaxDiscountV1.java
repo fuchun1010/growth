@@ -29,7 +29,7 @@ public class MaxDiscountV1 implements MaxDiscount {
     int firstProfit = 0;
 
     val remainingGoods = Stream.ofAll(goods).tail().toJavaList();
-    val remainingDiscount = Stream.ofAll(discounts).tail().toJavaList();
+    List<Discount> remainingDiscount = Stream.ofAll(discounts).tail().toJavaList();
 
     val left = this.maxAvailableProfit(goods, remainingDiscount);
 
@@ -43,7 +43,12 @@ public class MaxDiscountV1 implements MaxDiscount {
         firstProfit = Math.max(firstProfit, discount.getSubValue());
       }
     }
-
+//    val selectFirstDiscount = Stream.ofAll(discounts).head();
+//    val isOk = selectFirstDiscount.getSku().contains(firstGoods.getSku())
+//            && selectFirstDiscount.getThreshold() < firstGoods.getPrice();
+//    if (isOk) {
+//      firstProfit = selectFirstDiscount.getSubValue();
+//    }
 
     System.out.println("firstProfit========>" + firstProfit);
     val right = this.maxAvailableProfit(remainingGoods, remainingDiscount) + firstProfit;
