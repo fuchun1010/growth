@@ -21,21 +21,21 @@ class FibV1ImplTest {
   @DisplayName("2个长度")
   void calculate2() {
     val result = this.fib.calculate(2);
-    Assertions.assertEquals(2, result);
+    Assertions.assertEquals(1, result);
   }
 
   @Test
   @DisplayName("3个长度")
   void calculate3() {
     val result = this.fib.calculate(3);
-    Assertions.assertEquals(3, result);
+    Assertions.assertEquals(2, result);
   }
 
   @Test
   @DisplayName("4个长度")
   void calculate4() {
     val result = this.fib.calculate(4);
-    Assertions.assertEquals(5, result);
+    Assertions.assertEquals(3, result);
   }
 
   @BeforeEach

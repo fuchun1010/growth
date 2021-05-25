@@ -22,6 +22,6 @@ public class FibV1Impl implements Fib {
     for (var index = fixedValue; index <= num; index++) {
       result[index] = result[index - 1] + result[index - 2];
     }
-    return result[num];
+    return result[num - 1];
   }
 }
