@@ -39,17 +39,11 @@ public class PaymentProfit {
     var rv = 0;
     var totalPrice = 0;
     val lastDiscount = Stream.ofAll(discounts).last();
-    var currentSkuFromGoods = Maps.<String, Integer>newHashMap();
+    var currentSkuFromGoods = this.toCart(goods);
     val priceMap = Maps.<String, Integer>newHashMap();
     val remainingDiscount = discounts.subList(0, discounts.size() - 1);
-    for (Goods good : goods) {
+    for (val good : goods) {
       priceMap.put(good.getSku(), good.getPrice());
-      val sku = good.getSku();
-      if (currentSkuFromGoods.containsKey(sku)) {
-        currentSkuFromGoods.computeIfPresent(sku, (key, v) -> ++v);
-      } else {
-        currentSkuFromGoods.put(sku, 1);
-      }
     }
 
     val discountForSku = Stream.of(lastDiscount.getSku().split("")).toList();
@@ -78,14 +72,14 @@ public class PaymentProfit {
 
     val remainingGoods = Lists.<Goods>newArrayList();
 
-    for (Map.Entry<String, Integer> entry : currentSkuFromGoods.entrySet()) {
+    for (val entry : currentSkuFromGoods.entrySet()) {
       if (entry.getValue() == 0) {
         continue;
       }
       if (totalPrice == -1) {
         continue;
       }
-      for (int index = 0; index < entry.getValue(); index++) {
+      for (var index = 0; index < entry.getValue(); index++) {
         val sku = entry.getKey();
         val price = priceMap.get(sku);
         val gd = new Goods().setSku(sku).setPrice(price);
@@ -95,10 +89,23 @@ public class PaymentProfit {
 
     rv = totalPrice >= lastDiscount.getThreshold() ? lastDiscount.getSubValue() : 0;
 
-    val left = this.maxProfit(remainingGoods, remainingDiscount) + rv;
-    val right = this.maxProfit(goods, remainingDiscount);
+    val left = this.maxProfit(goods, remainingDiscount);
+    val right = this.maxProfit(remainingGoods, remainingDiscount) + rv;
     return Math.max(left, right);
 
+  }
+
+  private Map<String, Integer> toCart(@NonNull final List<Goods> goods) {
+    val cart = Maps.<String, Integer>newHashMap();
+    for (Goods good : goods) {
+      val sku = good.getSku();
+      if (cart.containsKey(sku)) {
+        cart.computeIfPresent(sku, (key, v) -> ++v);
+      } else {
+        cart.put(sku, 1);
+      }
+    }
+    return cart;
   }
 
 }

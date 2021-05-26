@@ -1,9 +1,9 @@
 package com.tank.renew.my20210526;
 
-import cn.hutool.core.util.StrUtil;
 import com.tank.renew.my20210524.Discount;
 import com.tank.renew.my20210524.Goods;
 import lombok.val;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -36,6 +36,6 @@ class PaymentProfitTest {
     val discounts = Arrays.asList(d1, d2, d3, d4);
     val goods = Arrays.asList(gd1, gd2, gd3, gd4);
     val actual = paymentProfit.maxProfit(goods, discounts);
-    System.out.println(StrUtil.format("max profit = [{}]", actual));
+    Assertions.assertEquals(actual, 25);
   }
 }
