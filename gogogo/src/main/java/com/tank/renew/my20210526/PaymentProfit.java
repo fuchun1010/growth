@@ -76,9 +76,6 @@ public class PaymentProfit {
       if (entry.getValue() == 0) {
         continue;
       }
-      if (totalPrice == -1) {
-        continue;
-      }
       for (var index = 0; index < entry.getValue(); index++) {
         val sku = entry.getKey();
         val price = priceMap.get(sku);
@@ -87,10 +84,11 @@ public class PaymentProfit {
       }
     }
 
+
     rv = totalPrice >= lastDiscount.getThreshold() ? lastDiscount.getSubValue() : 0;
 
-    val left = this.maxProfit(goods, remainingDiscount);
-    val right = this.maxProfit(remainingGoods, remainingDiscount) + rv;
+    val left = this.maxProfit(remainingGoods, remainingDiscount) + rv;
+    val right = this.maxProfit(goods, remainingDiscount);
     return Math.max(left, right);
 
   }
