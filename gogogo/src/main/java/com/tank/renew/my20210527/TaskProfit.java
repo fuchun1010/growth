@@ -2,7 +2,6 @@ package com.tank.renew.my20210527;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.vavr.collection.Stream;
 import lombok.NonNull;
 import lombok.val;
 import lombok.var;
@@ -20,6 +19,8 @@ public class TaskProfit {
     val taskTable = Lists.<PreTask>newArrayList();
     var preTaskId = 0;
 
+    val filter = Maps.<Integer, Integer>newHashMap();
+
     for (Task task : tasks) {
       taskMap.put(task.getTaskId(), task);
     }
@@ -35,11 +36,10 @@ public class TaskProfit {
             preTaskId = Math.max(preTaskId, tt.getTaskId());
           }
         }
-
-        val result = Stream.ofAll(taskTable).map(PreTask::getTaskId).toSet();
-        if (!result.contains(task.getTaskId())) {
+        if (!filter.containsKey(task.getTaskId())) {
           val preTask = new PreTask().setTaskId(task.getTaskId()).setPreTaskId(preTaskId);
           taskTable.add(preTask);
+          filter.put(task.getTaskId(), 1);
         }
         preTaskId = 0;
       }
