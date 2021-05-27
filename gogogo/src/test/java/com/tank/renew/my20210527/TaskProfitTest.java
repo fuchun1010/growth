@@ -23,8 +23,8 @@ class TaskProfitTest {
    * 8---->5
    */
   @Test
-  @DisplayName("最大任务价值")
-  void maxProfit() {
+  @DisplayName("创建可选任务列表")
+  void toSelectableTaskList() {
     val mockTasks = this.initTasks();
     val selectableTaskList = this.taskProfit.toSelectableTaskList(mockTasks);
     Assertions.assertEquals(selectableTaskList.get(0).getPreTaskId(), 0);
