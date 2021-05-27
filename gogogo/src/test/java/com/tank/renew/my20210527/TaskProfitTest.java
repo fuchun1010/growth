@@ -1,13 +1,7 @@
 package com.tank.renew.my20210527;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import io.vavr.collection.Stream;
 import lombok.val;
-import lombok.var;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,38 +25,16 @@ class TaskProfitTest {
   @Test
   @DisplayName("最大任务价值")
   void maxProfit() {
-    val tasks = this.initTasks();
-    val taskMap = Maps.<Integer, Task>newHashMap();
-    val taskTable = Lists.<PreTask>newArrayList();
-    var preTaskId = 0;
-
-    for (Task task : tasks) {
-      taskMap.put(task.getTaskId(), task);
-    }
-
-    for (Task task : tasks) {
-      if (taskTable.isEmpty()) {
-        val preTask = new PreTask().setTaskId(task.getTaskId()).setPreTaskId(0);
-        taskTable.add(preTask);
-      } else {
-        for (val tt : taskTable) {
-          val target = taskMap.get(tt.getTaskId());
-          if (target.getEnd() <= task.getStart()) {
-            preTaskId = Math.max(preTaskId, tt.getTaskId());
-          }
-        }
-
-        val result = Stream.ofAll(taskTable).map(PreTask::getTaskId).toSet();
-        if (!result.contains(task.getTaskId())) {
-          val preTask = new PreTask().setTaskId(task.getTaskId()).setPreTaskId(preTaskId);
-          taskTable.add(preTask);
-
-        }
-        preTaskId = 0;
-      }
-    }
-
-    System.out.println("");
+    val mockTasks = this.initTasks();
+    val selectableTaskList = this.taskProfit.toSelectableTaskList(mockTasks);
+    Assertions.assertEquals(selectableTaskList.get(0).getPreTaskId(), 0);
+    Assertions.assertEquals(selectableTaskList.get(1).getPreTaskId(), 0);
+    Assertions.assertEquals(selectableTaskList.get(2).getPreTaskId(), 0);
+    Assertions.assertEquals(selectableTaskList.get(3).getPreTaskId(), 1);
+    Assertions.assertEquals(selectableTaskList.get(4).getPreTaskId(), 0);
+    Assertions.assertEquals(selectableTaskList.get(5).getPreTaskId(), 2);
+    Assertions.assertEquals(selectableTaskList.get(6).getPreTaskId(), 3);
+    Assertions.assertEquals(selectableTaskList.get(7).getPreTaskId(), 5);
   }
 
   private List<Task> initTasks() {
@@ -76,4 +48,11 @@ class TaskProfitTest {
     val task8 = new Task().setTaskId(8).setStart(8).setEnd(11).setValue(4);
     return Arrays.asList(task1, task2, task3, task4, task5, task6, task7, task8);
   }
+
+  @BeforeEach
+  void init() {
+    this.taskProfit = new TaskProfit();
+  }
+
+  private TaskProfit taskProfit;
 }
