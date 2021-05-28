@@ -12,6 +12,17 @@ import java.util.List;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("最大任务收益")
 class TaskProfitTest {
+
+  @Test
+  @DisplayName("最大收益")
+  void maxProfit() {
+    this.taskProfit = new TaskProfit();
+    val tasks = this.initTasks();
+    val selectableTask = this.taskProfit.toSelectableTaskList(tasks);
+    val result = this.taskProfit.maxProfit(tasks, selectableTask);
+    Assertions.assertEquals(result, 13);
+  }
+
   /*
    * 1 ---> 0
    * 2 ---> 0

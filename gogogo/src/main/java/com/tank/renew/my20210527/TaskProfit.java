@@ -16,10 +16,25 @@ public class TaskProfit {
 
   public int maxProfit(@NonNull final List<Task> tasks,
                        @NonNull final List<PreTask> preTasks) {
-
-    val lastTask = Stream.ofAll(tasks).last();
-
-    return 0;
+    if (tasks.isEmpty()) {
+      return 0;
+    }
+    val last = Stream.ofAll(tasks).last();
+    val remaining = tasks.subList(0, tasks.size() - 1);
+    val preTaskId = Stream.ofAll(preTasks)
+            .filter(t -> t.getTaskId() == last.getTaskId())
+            .map(PreTask::getPreTaskId)
+            .head();
+    val value = last.getValue();
+    val leftTasks = Lists.<Task>newArrayList();
+    for (Task task : remaining) {
+      if (task.getTaskId() <= preTaskId) {
+        leftTasks.add(task);
+      }
+    }
+    val left = this.maxProfit(leftTasks, preTasks) + value;
+    val right = this.maxProfit(remaining, preTasks);
+    return Math.max(left, right);
   }
 
   /**
